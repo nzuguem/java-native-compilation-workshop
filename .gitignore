@@ -1,0 +1,4 @@
+# Local env
+.idea
+**/*.class
+**/*.log
