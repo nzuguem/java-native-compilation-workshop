@@ -14,9 +14,18 @@ sdk  default java 21-graalce
    Migrating from OpenJDK to GraalVM allows you to benefit natively from the performance provided by the Graal JIT, without changing your application code.
 
 ```bash
-time java -XX:+UseJVMCICompiler Fibonacci.java 17 1000000
+java -XX:+UseJVMCICompiler CountUppercase.java Hello World
 
-# 4.99s user 0.11s system 101% cpu 5.047 total
+#1 (77 ms)
+#2 (80 ms)
+#3 (55 ms)
+#4 (47 ms)
+#5 (42 ms)
+#6 (43 ms)
+#7 (53 ms)
+#8 (54 ms)
+#9 (43 ms)
+#total: 19999998 (538 ms)
 ```
 
 - `-XX:+UseJVMCICompiler` : It is optional, and lets you use the Graal JIT instead of C2.
@@ -24,8 +33,17 @@ time java -XX:+UseJVMCICompiler Fibonacci.java 17 1000000
 3. With GraalVM, you can configure the runtime to ignore JVMCI and use HotSpot's C2 JIT.
 
 ```bash
-time java -XX:-UseJVMCICompiler Fibonacci.java 17 1000000
+java -XX:-UseJVMCICompiler CountUppercase.java Hello World
 
-# 8.23s user 0.16s system 99% cpu 8.396 total
+#1 (173 ms)
+#2 (94 ms)
+#3 (41 ms)
+#4 (56 ms)
+#5 (43 ms)
+#6 (40 ms)
+#7 (39 ms)
+#8 (45 ms)
+#9 (43 ms)
+#total: 19999998 (612 ms)
 ```
 

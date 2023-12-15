@@ -4,23 +4,28 @@
    The downside is that it takes a long time 
 
 ```bash
-javac Fibonacci.java
+javac CountUppercase.java
 
-native-image Fibonacci
+native-image CountUppercase
 
-time ./fibonacci 17 1000000
-# 6,15s user 0,02s system 95% cpu 6,498 total
-
-time ./fibonacci 17 100
-# 0,00s user 0,01s system 33% cpu 0,025 total  
+./countuppercase Hello World
+#1 (139 ms)
+#2 (106 ms)
+#3 (105 ms)
+#4 (104 ms)
+#5 (117 ms)
+#6 (126 ms)
+#7 (112 ms)
+#8 (108 ms)
+#9 (106 ms)
+#total: 19999998 (1132 ms)
 ```
 
-With 1 million loop turns, the execution time with C2 is less than with the native image. The reason is that C2 performs frequent optimizations, whereas with the native image, optimization has been performed up to a certain level.
+With 10 million loop turns, the execution time with C2/Graal is less than with the native image. The reason is that C2/Graal performs frequent optimizations, whereas with the native image, optimization has been performed up to a certain level.
 
 Below are the native compilation logs. For more information on this output, see this [doc][native-image-compilation-output]
 ![JIT Compiler Log](../images/native-image-build-output.png)
 
-2. 
 
 <!-- links -->
 [native-image-compilation-output]: https://www.graalvm.org/latest/reference-manual/native-image/overview/BuildOutput/
