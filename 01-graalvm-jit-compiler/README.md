@@ -49,3 +49,6 @@ time java -XX:-UseJVMCICompiler CountUppercase.java Hello World
 #1,21s user 0,11s system 140% cpu 0,942 total 360304 kb rss
 ```
 
+## Performance measurement
+- **Startup Time** *approximately equal* ***0,429 ms***
+- **Memory** *approximately equal* ***350 MB*** 

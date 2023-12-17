@@ -28,6 +28,12 @@ With 10 million loop turns, the execution time with C2/Graal is less than with t
 Below are the native compilation logs. For more information on this output, see this [doc][native-image-compilation-output]
 ![JIT Compiler Log](../images/native-image-build-output.png)
 
+## Performance measurement
+- **Startup Time** *approximately equal* ***0,024 ms***
+- **Memory** *approximately equal* ***67 MB***
+
+Native-image performance (AOT) is far superior to that of [JIT](../01-graalvm-jit-compiler/README.md#performance-measurement)
+
 
 <!-- links -->
 [native-image-compilation-output]: https://www.graalvm.org/latest/reference-manual/native-image/overview/BuildOutput/

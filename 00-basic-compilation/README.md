@@ -24,9 +24,6 @@ The runtime proceeds to the de-optimization phases when the compilation hypothes
 
 For more information on compilation logs, see [here][explain-compilation-log]
 
-<!-- Links -->
-[explain-compilation-log]: https://www.baeldung.com/jvm-tiered-compilation#1-compilation-logs
-
 2. Execution in pure interpretation mode (**JIT-less***)
 
 ```bash
@@ -47,4 +44,5 @@ time java -Xint CountUppercase.java Hello World
 ```
 Very, very serious performance degradation, as we no longer benefit from JIT. The runtime's interpreter mode is very costly.
 
-
+<!-- Links -->
+[explain-compilation-log]: https://www.baeldung.com/jvm-tiered-compilation#1-compilation-logs
