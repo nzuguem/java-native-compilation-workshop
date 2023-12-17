@@ -1,5 +1,18 @@
 # Native compilation workshop in Java
 
+## Install JDKs
+```bash
+curl -s "https://get.sdkman.io" | bash
+
+# Install GraalVM
+sdk  install java 21-graalce
+
+# Install JDK 21
+sdk  install java 21.0.1-tem
+
+sdk  default java 21-graalce
+```
+
 ## Measurement considerations
 > ⚠️ All measurements are highly dependent on the characteristics of my computer. So feel free to replay the commands to make up your own mind.
 
