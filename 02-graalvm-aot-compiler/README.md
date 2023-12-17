@@ -8,17 +8,19 @@ javac CountUppercase.java
 
 native-image CountUppercase
 
-./countuppercase Hello World
-#1 (139 ms)
-#2 (106 ms)
-#3 (105 ms)
+time ./countuppercase Hello World
+
+#1 (125 ms)
+#2 (107 ms)
+#3 (107 ms)
 #4 (104 ms)
-#5 (117 ms)
-#6 (126 ms)
-#7 (112 ms)
+#5 (105 ms)
+#6 (105 ms)
+#7 (105 ms)
 #8 (108 ms)
-#9 (106 ms)
-#total: 19999998 (1132 ms)
+#9 (104 ms)
+#total: 19999998 (1075 ms)
+#1,05s user 0,02s system 97% cpu 1,099 total 67728 kb rss
 ```
 
 With 10 million loop turns, the execution time with C2/Graal is less than with the native image. The reason is that C2/Graal performs frequent optimizations, whereas with the native image, optimization has been performed up to a certain level.
