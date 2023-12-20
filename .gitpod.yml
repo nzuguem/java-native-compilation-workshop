@@ -2,6 +2,13 @@
 image:
   file: .gitpod.Dockerfile
 
+tasks:
+  - name: 03-springboot
+    before: |
+      cd 03-springboot
+    init: |
+      ./gradlew build
+
 vscode:
   extensions:
     - redhat.java
