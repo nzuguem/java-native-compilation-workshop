@@ -7,7 +7,7 @@ tasks:
     before: |
       cd 03-springboot
     init: |
-      ./gradlew build
+      make build
 
 vscode:
   extensions:
