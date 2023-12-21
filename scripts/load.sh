@@ -14,6 +14,3 @@ echo "Simulating some load..."
 hey -n 1000000 http://localhost:8080/hello/Perf
 
 kill $MY_PID
-
-# give perf some time to print its output
-sleep 0.2

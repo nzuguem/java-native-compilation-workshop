@@ -23,17 +23,16 @@ sdk install java 21.0.1-tem
 sdk default java 21-graalce
 EOF
 
-# Install monitoring and perf tools : perf, hey
+# Install monitoring and perf tools : hey
 RUN <<EOF
 set -e
 
 sudo apt-get update
 
-sudo apt-get install -y linux-tools-generic \
-                        hey
+sudo apt-get install -y hey
 sudo rm -rf /var/lib/apt/lists/*
-sudo cp /lib/linux-tools-*/perf /usr/bin/perf
 
 pip install --no-cache-dir --upgrade pip
 pip install --no-cache-dir psrecord
+pip install --no-cache-dir matplotlib
 EOF
