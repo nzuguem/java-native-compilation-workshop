@@ -86,7 +86,7 @@ make load-native
 #  [200]	1000000 responses
 ```
 
-In Native Image mode, throughput is higher. But never mind, at a certain peak load level, JVM mode will have a higher throughput, due to continuous optimization via Tiried Compilation.
+In Native Image mode, throughput is higher. But never mind, at a certain peak load level, JVM mode will have a higher throughput, due to continuous optimization via Tiered Compilation.
 
 5. To run a Spring Boot application on the JVM and have it use AOT generated code
 

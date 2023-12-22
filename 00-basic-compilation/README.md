@@ -19,7 +19,7 @@ time java -XX:+PrintCompilation CountUppercase.java Hello World > jit-compiler.l
 ```
 ![JIT Compiler Log](../images/jit-compiler-log.png)
 
-We can observe the activity of C1 (*3*), via ***Tiried Compilation***. All the profiling data collected, together with the JIT compilation thresholds, triggers C2 (*4*).
+We can observe the activity of C1 (*3*), via ***Tiered Compilation***. All the profiling data collected, together with the JIT compilation thresholds, triggers C2 (*4*).
 The runtime proceeds to the de-optimization phases when the compilation hypotheses are wrong (*made not entering*).
 
 For more information on compilation logs, see [here][explain-compilation-log]
