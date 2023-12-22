@@ -40,5 +40,5 @@ time java -XX:-UseJVMCICompiler CountUppercase.java Hello World
 ```
 
 ## Performance measurement
-- **Startup Time** *approximately equal* ***0,429 ms***
+- **Startup Time** *approximately equal* ***0,429 s***
 - **Memory** *approximately equal* ***350 MB*** 

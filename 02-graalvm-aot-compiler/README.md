@@ -29,7 +29,7 @@ Below are the native compilation logs. For more information on this output, see 
 ![JIT Compiler Log](../images/native-image-build-output.png)
 
 ## Performance measurement
-- **Startup Time** *approximately equal* ***0,024 ms***
+- **Startup Time** *approximately equal* ***0,024 s***
 - **Memory** *approximately equal* ***67 MB***
 
 Native-image performance (AOT) is far superior to that of [JIT](../01-graalvm-jit-compiler/README.md#performance-measurement)
