@@ -1,4 +1,4 @@
-package me.nzuguem;
+package me.nzuguem.quarkusnative;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
