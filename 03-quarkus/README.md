@@ -28,7 +28,7 @@ In this way, Quarkus' role in relation to GraalVM is to elaborate the metadata (
 
 - Run the application in native image mode and displays the time elapsed between startup and success of the first request -> ***0.056 s***
 ```bash
-make start-native
+time make start-native
 
 #__  ____  __  _____   ___  __ ____  ______
 # --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
@@ -41,7 +41,7 @@ make start-native
 
 - Run the application in JVM mode and displays the time elapsed between startup and success of the first request -> ***0.565 s***
 ```bash
-make start-jvm
+time make start-jvm
 
 #__  ____  __  _____   ___  __ ____  ______
 # --/ __ \/ / / / _ | / _ \/ //_/ / / / __/

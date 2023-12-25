@@ -25,7 +25,7 @@ During this step, we retrieve the GraalVM reachability metadata ([reachability m
 
 - Run the application in native image mode and displays the time elapsed between startup and success of the first request -> ***0.103 s***
 ```bash
-make start-native
+time make start-native
 # .   ____          _            __ _ _
 # /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 #( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
@@ -39,7 +39,7 @@ make start-native
  
 - Run the application in JVM mode and displays the time elapsed between startup and success of the first request -> ***1.441 s***
 ```bash
-make start-jvm
+time make start-jvm
 # .   ____          _            __ _ _
 # /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 #( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
