@@ -17,3 +17,85 @@ In this way, Quarkus' role in relation to GraalVM is to elaborate the metadata (
 ![Quarkus Application Startup Steps](../images/quarkus-application-startup-steps.png)
 
 > The consequences of moving these steps to build time are **less memory consumption** (*many classes have been eliminated because they are not useful in the runtime, so there are fewer classes to scan and load at startup*) and **reduced startup time** (*fewer things to do at startup*).
+
+1. Create Native image
+
+```bash
+./mvnw -Pnative package
+```
+
+2. Run the application in native image mode and compare with JVM mode
+
+- Run the application in native image mode and displays the time elapsed between startup and success of the first request -> ***0.056 s***
+```bash
+make start-native
+
+#__  ____  __  _____   ___  __ ____  ______
+# --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+# -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+#--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+# ...
+
+#make start-native  0,01s user 0,02s system 68% cpu 0,056 total 
+```
+
+- Run the application in JVM mode and displays the time elapsed between startup and success of the first request -> ***0.565 s***
+```bash
+make start-jvm
+
+#__  ____  __  _____   ___  __ ____  ______
+# --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+# -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+#--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+#...
+
+#make start-jvm  0,12s user 0,22s system 60% cpu 0,565 total
+```
+
+3. Performance comparison between JVM (JIT) mode and Native Image (AOT) mode
+
+![Quarkus Native Image (AOT) vs JVM (JIT)](../images/quarkus-ni-aot-vs-jvm-jit.png)
+The JVM makes heavy use of the processor during the warm-up JIT activities described above, while the native executable barely uses the processor at all, since all the costly compilation operations have taken place at the time of generation.
+
+4. Simulation of a peak load with 1 million requests on the application in JVM mode and Native mode.
+
+- JVM Mode -> ***Requests/sec:	63238.6862***
+```bash
+make load-jvm
+
+#Summary:
+#  Total:	15.8131 secs
+#  Slowest:	0.2267 secs
+#  Fastest:	0.0000 secs
+#  Average:	0.0008 secs
+#  Requests/sec:	63238.6862
+# Status code distribution:
+#  [200]	1000000 responses
+```
+
+- Native Image (AOT) Mode -> ***Requests/sec:	62941.2531***
+```bash
+make load-native
+
+#Summary:
+#  Total:	15.8878 secs
+#  Slowest:	0.1570 secs
+#  Fastest:	0.0000 secs
+#  Average:	0.0008 secs
+#  Requests/sec:	62941.2531
+# Status code distribution:
+#  [200]	1000000 responses
+```
+
+In Native Image mode, throughput is higher. But never mind, at a certain peak load level, JVM mode will have a higher throughput, due to continuous optimization via Tiered Compilation.
+
+> Throughput is too high compared with Spring Boot, because Quarkus is a reactive framework based on Vert.x/Netty. So all requests are handled by a Vert.X Non Blocking I/O, and the switch is made to a Worker Thread depending on the programming paradigm (Imperative or Reactive): This is ***Smart Routing***
+> 
+> ![Quarkus Smart Routing](../images/quarkus-smart-routing.png) 
+
+## Container Image and Native Image
+1. Generate a Docker image based on a native image
+
+```bash
+make build-container-image-native
+```

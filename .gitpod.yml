@@ -8,8 +8,15 @@ tasks:
       cd 03-springboot
     init: |
       make build
+  - name: 03-quarkus
+    openMode: split-right
+    before: |
+      cd 03-quarkus
+    init: |
+      make build
 
 vscode:
   extensions:
     - redhat.java
     - VMware.vscode-spring-boot
+    - redhat.vscode-quarkus

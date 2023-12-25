@@ -18,9 +18,13 @@ set -e
 echo "sdkman_auto_answer=true" >> "$SDKMAN_DIR"/etc/config
 echo "sdkman_auto_env=true" >> "$SDKMAN_DIR"/etc/config
 
+## Install JDKs
 sdk install java 21-graalce
 sdk install java 21.0.1-tem
 sdk default java 21-graalce
+
+## Install Quarkus CLI
+sdk install quarkus
 EOF
 
 # Install monitoring and perf tools : hey
@@ -29,9 +33,12 @@ set -e
 
 sudo apt-get update
 
+## Install Hey
 sudo apt-get install -y hey
+
 sudo rm -rf /var/lib/apt/lists/*
 
+# Install psrecord
 pip install --no-cache-dir --upgrade pip
 pip install --no-cache-dir psrecord
 pip install --no-cache-dir matplotlib

@@ -48,3 +48,4 @@ In the output of the `time` command, there are 2 elements of interest to us :
 2. [GraalVM JIT Compiler](01-graalvm-jit-compiler) 👉🏼 Installing and testing GraalVM JIT
 3. [GraalVM AOT Compiler](02-graalvm-aot-compiler) 👉🏼 Discover the Ahead Of Time (AOT) compilation with GraalVM   
 4. [Spring Boot Native - AOT](03-springboot) 👉🏼 Discover the Ahead Of Time (AOT) compilation with Spring Boot + GraalVM
+5. [Quarkus Native - AOT](03-springboot) 👉🏼 Discover the Ahead Of Time (AOT) compilation with Quarkus + GraalVM

@@ -40,3 +40,6 @@ record-jvm-aot: ##  Run application in JVM AOT mode with performance & Plot outp
 record-native: ##  Run application in Native Image mode with performance & Plot output
 	@../scripts/record.sh $(NATIVE_IMAGE_COMMAND)
 
+build-container-image-native: ## Build container image based on native image
+	@./gradlew bootBuildImage
+

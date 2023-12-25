@@ -30,3 +30,6 @@ record-jvm: ##  Run application in JVM mode with performance & Plot output
 record-native: ##  Run application in Native Image mode with performance & Plot output
 	@../scripts/record.sh $(NATIVE_IMAGE_COMMAND)
 
+build-container-image-native: ## Build container image based on native image
+	@./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
+
