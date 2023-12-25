@@ -18,7 +18,7 @@ In this way, Quarkus' role in relation to GraalVM is to elaborate the metadata (
 
 > The consequences of moving these steps to build time are **less memory consumption** (*many classes have been eliminated because they are not useful in the runtime, so there are fewer classes to scan and load at startup*) and **reduced startup time** (*fewer things to do at startup*).
 
-1. Create Native image
+1. Create Native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 
 ```bash
 ./mvnw -Pnative package

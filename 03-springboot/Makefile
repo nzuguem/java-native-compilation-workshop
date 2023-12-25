@@ -10,7 +10,7 @@ help: ## Display this help.
 build: ## Build the application
 	@./gradlew build
 
-build-native-image: ## Build the native image
+build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 	@./gradlew nativeCompile
 
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
