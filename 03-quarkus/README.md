@@ -87,7 +87,7 @@ make load-native
 #  [200]	1000000 responses
 ```
 
-In Native Image mode, throughput is higher. But never mind, at a certain peak load level, JVM mode will have a higher throughput, due to continuous optimization via Tiered Compilation.
+In JVM mode, throughput is higher. At a certain peak load level, JVM mode will have a higher throughput, due to continuous optimization via Tiered Compilation.
 
 > Throughput is too high compared with Spring Boot, because Quarkus is a reactive framework based on Vert.x/Netty. So all requests are handled by a Vert.X Non Blocking I/O, and the switch is made to a Worker Thread depending on the programming paradigm (Imperative or Reactive): This is ***Smart Routing***
 > 
