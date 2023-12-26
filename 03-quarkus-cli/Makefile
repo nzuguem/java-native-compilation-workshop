@@ -7,7 +7,3 @@ help: ## Display this help.
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 	@./gradlew build -Dquarkus.package.type=native
 	@mv build/quarkus-cli-1.0-runner hello
-
-build-native-image-for-linux: ## Build the native image for Linux
-	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-	@mv build/quarkus-cli-1.0-runner hello

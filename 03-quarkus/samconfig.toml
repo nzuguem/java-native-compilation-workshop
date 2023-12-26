@@ -1,0 +1,9 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "quarkus-native"
+resolve_s3 = true
+s3_prefix = "quarkus-native"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []

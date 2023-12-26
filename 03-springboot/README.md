@@ -11,6 +11,8 @@ During this step, we retrieve the GraalVM reachability metadata ([reachability m
 
 > All these artifacts will then be passed to the GraalVM "native-image" component.
 
+## Let's see it together !
+
 1. Create Native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 
 ```bash

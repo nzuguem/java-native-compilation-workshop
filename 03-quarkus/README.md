@@ -18,6 +18,8 @@ In this way, Quarkus' role in relation to GraalVM is to elaborate the metadata (
 
 > The consequences of moving these steps to build time are **less memory consumption** (*many classes have been eliminated because they are not useful in the runtime, so there are fewer classes to scan and load at startup*) and **reduced startup time** (*fewer things to do at startup*).
 
+## Let's see it together !
+
 1. Create Native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 
 ```bash
@@ -99,3 +101,57 @@ In JVM mode, throughput is higher. At a certain peak load level, JVM mode will h
 ```bash
 make build-container-image-native
 ```
+
+## Deploy on AWS Lambda
+
+> We use the AWS SAM tool (Template and CLI)
+
+1. Build SAM Application - Custom makefile task (build native image and generate AWS Lambda artifact)
+
+```bash
+make sam-build
+```
+
+2. Deploy artefact on AWS Lambda
+
+> ⚠️ The following 2 environment variables must be configured:
+> - `AWS_ACCESS_KEY_ID`
+> - `AWS_SECRET_ACCESS_KEY`
+> 
+> For more details, see [AWS SAM Prerequisites][aws-sam-prerequisites]
+
+```bash
+make sam-deploy
+```
+![SAM Deploy](../images/sam-deploy.png)
+
+3. Let's look at logs and startup times + memory consumption
+
+- Follow logs
+```bash
+make sam-logs
+```
+- Http call in other Terminal - the URL is the one generated following deployment `make sam-deploy`)
+
+```bash
+curl https://izshjs7febcesehw7xlc5wctkm0janto.lambda-url.eu-west-1.on.aws/hello/World
+```
+- Logs
+
+![SAM Logs First HTTP Call](../images/sam-logs-with-init-duration.png)
+The screenshot above shows **the first HTTP request to my lambda function**. Note that the application takes ***5 ms*** to start and serve the request, and consumes ***66 MB*** of memory.\
+The **Init Duration** is the time Lambda takes to provision an execution environment (a component of ***cold start***). This time is billed (**Billing Duration**) because I've chosen to use *Lambda Web Adapter (LWA)*.
+
+![SAM Logs Second HTTP Call](../images/sam-logs-without-init-duration.png)
+The screenshot above shows **the second HTTP request to my lambda function**. Note that there is no longer any **Init Duration**, as the provisioned execution environment is still available. We're on ***2 ms*** in terms of Duration, and on ***67 MB*** in terms of memory.
+
+4. Clear
+
+```bash
+make sam-delete
+```
+
+<!-- links -->
+[aws-sam-prerequisites]: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html
+
+

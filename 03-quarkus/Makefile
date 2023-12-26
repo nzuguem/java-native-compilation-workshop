@@ -33,3 +33,23 @@ record-native: ##  Run application in Native Image mode with performance & Plot 
 build-container-image-native: ## Build container image based on native image
 	@./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
 
+build-QuarkusNative: ## Task executed by SAM CLI to generate the artifact to be deployed on AWS Lambda/ARM64
+	# Using the GraalVM Mandrel Docker image. This will generate a native Linux/Arm64-compatible image
+	@./mvnw  package -Pnative  -Dquarkus.native.container-build=true
+	@cp src/main/resources/bootstrap $(ARTIFACTS_DIR)
+	@cp target/quarkus-native-1.0-runner $(ARTIFACTS_DIR)/hello
+	@chmod 777 $(ARTIFACTS_DIR)/hello
+	@chmod 777 $(ARTIFACTS_DIR)/bootstrap
+
+sam-build: ## Build application for SAM (Serverless Application Model)
+	@sam build
+
+sam-deploy: ## Deploy application on AWS lambda
+	@sam deploy
+
+sam-logs: ## SAM Logs AWS Lambda Function (Tail)
+	@sam logs -t -n QuarkusNative --stack-name quarkus-native
+
+sam-delete: ## Delete Stack AWS
+	@sam delete
+

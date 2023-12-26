@@ -23,20 +23,14 @@ The idea seems crazy, and a wall looms on the horizon when you think of the Java
 why use Java for short-lived scripts when it excels at managing long-lived applications ? \
 Simply because it's now possible, viable and powerful! With the arrival of native compilation (AOT), a Java program can be extremely powerful right from the start, and consume less memory.
 
-## Building the CLI
+## Let's see it together !
 
 1. Create native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 ```bash
 make build-native-image
 ```
 
-2. Creating a Linux executable without GraalVM installed
-
-```bash
-make build-native-image-for-linux
-```
-
-3. Execute CLI
+2. Execute CLI
 
 ```bash
 ./hello --help
