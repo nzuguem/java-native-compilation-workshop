@@ -115,8 +115,9 @@ make sam-build
 2. Deploy artefact on AWS Lambda
 
 > ⚠️ The following 2 environment variables must be configured:
-> - `AWS_ACCESS_KEY_ID`
-> - `AWS_SECRET_ACCESS_KEY`
+> - `AWS_ACCESS_KEY_ID=****`
+> - `AWS_SECRET_ACCESS_KEY=****`
+> - `AWS_DEFAULT_REGION=eu-west-1`
 > 
 > For more details, see [AWS SAM Prerequisites][aws-sam-prerequisites]
 

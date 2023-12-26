@@ -33,8 +33,7 @@ record-native: ##  Run application in Native Image mode with performance & Plot 
 build-container-image-native: ## Build container image based on native image
 	@./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
 
-build-QuarkusNative: ## Task executed by SAM CLI to generate the artifact to be deployed on AWS Lambda/ARM64
-	# Using the GraalVM Mandrel Docker image. This will generate a native Linux/Arm64-compatible image
+build-QuarkusNative: ## Task executed by SAM CLI to generate the artifact to be deployed on AWS Lambda
 	@./mvnw  package -Pnative  -Dquarkus.native.container-build=true
 	@cp src/main/resources/bootstrap $(ARTIFACTS_DIR)
 	@cp target/quarkus-native-1.0-runner $(ARTIFACTS_DIR)/hello
@@ -45,7 +44,14 @@ sam-build: ## Build application for SAM (Serverless Application Model)
 	@sam build
 
 sam-deploy: ## Deploy application on AWS lambda
-	@sam deploy
+	# Substitution because CFN Mapping Keys do not support the "_" character
+	ARCH=$$(uname -m); \
+	if [ "$$ARCH" = "x86_64" ]; then \
+    	CPU_ARCH="$${ARCH//_/-}"; \
+	else \
+		CPU_ARCH="$$ARCH"; \
+	fi; \
+	sam deploy --parameter-overrides ArchCPU=$$CPU_ARCH
 
 sam-logs: ## SAM Logs AWS Lambda Function (Tail)
 	@sam logs -t -n QuarkusNative --stack-name quarkus-native

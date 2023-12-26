@@ -3,6 +3,29 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Quarkus Native on AWS Lambda
 
+Parameters:
+  ArchCPU:
+    Description: The Architecture CPU
+    Type: String
+    Default: x86_64
+    AllowedValues:
+      - x86_64
+      - arm64
+      - aarch64
+    ConstraintDescription: must be a x86_64, arm64 or aarch64
+
+Mappings:
+  ArchitecturesMap:
+    arm64:
+      arch: arm64
+      lwa: arn:aws:lambda:eu-west-1:753240598075:layer:LambdaAdapterLayerArm64:17
+    aarch64:
+      arch: arm64
+      lwa: arn:aws:lambda:eu-west-1:753240598075:layer:LambdaAdapterLayerArm64:17
+    x86-64:
+      arch: x86_64
+      lwa: arn:aws:lambda:eu-west-1:753240598075:layer:LambdaAdapterLayerX86:17
+
 Globals:
   Function:
     Timeout: 20
@@ -14,13 +37,13 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Architectures:
-        - arm64
+        - !FindInMap [ArchitecturesMap, !Ref ArchCPU, "arch"]
       Runtime: provided.al2
       CodeUri: .
       Handler: bootstrap.is.real.handler
       Layers:
         # Lambda Web Adapter (LWA)
-        - Fn::Sub: arn:aws:lambda:${AWS::Region}:753240598075:layer:LambdaAdapterLayerArm64:17
+        - !FindInMap [ArchitecturesMap, !Ref ArchCPU, "lwa"]
       FunctionUrlConfig:
         AuthType: NONE
       Environment:
