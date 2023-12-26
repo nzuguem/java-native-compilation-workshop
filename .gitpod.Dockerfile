@@ -9,7 +9,7 @@ SHELL ["/bin/bash", "-c"]
 # Override time command
 RUN echo "alias time='/usr/bin/time -f \"%E real,%U user,%S sys, %M kb rss\"'" >> /home/gitpod/.bashrc
 
-# Install JDKs
+# Install SDKs
 RUN <<EOF
 set -e
 
@@ -42,4 +42,15 @@ sudo rm -rf /var/lib/apt/lists/*
 pip install --no-cache-dir --upgrade pip
 pip install --no-cache-dir psrecord
 pip install --no-cache-dir matplotlib
+EOF
+
+# Install AWS Tools
+RUN <<EOF
+set -e
+
+## Install AWS CLI
+pip install --no-cache-dir awscli --upgrade
+
+## Install SAM CLI
+pip install --no-cache-dir aws-sam-cli --upgrade
 EOF
