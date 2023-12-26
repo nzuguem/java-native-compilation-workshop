@@ -7,12 +7,12 @@ Parameters:
   ArchCPU:
     Description: The Architecture CPU
     Type: String
-    Default: x86_64
+    Default: x86-64
     AllowedValues:
-      - x86_64
+      - x86-64
       - arm64
       - aarch64
-    ConstraintDescription: must be a x86_64, arm64 or aarch64
+    ConstraintDescription: must be a x86-64, arm64 or aarch64
 
 Mappings:
   ArchitecturesMap:

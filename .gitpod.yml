@@ -20,3 +20,4 @@ vscode:
     - redhat.java
     - VMware.vscode-spring-boot
     - redhat.vscode-quarkus
+    - mhutchie.git-graph

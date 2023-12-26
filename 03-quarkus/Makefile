@@ -3,6 +3,14 @@ default: help
 JVM_COMMAND="java -Xmx256m -jar target/quarkus-native-1.0-runner.jar"
 NATIVE_IMAGE_COMMAND="./target/quarkus-native-1.0-runner -Xmx256m"
 
+# Substitution because CFN Mapping Keys do not support the "_" character
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+    CPU_ARCH := $(shell echo $(ARCH) | sed 's/_/-/g')
+else
+    CPU_ARCH := $(ARCH)
+endif
+
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
@@ -44,14 +52,7 @@ sam-build: ## Build application for SAM (Serverless Application Model)
 	@sam build
 
 sam-deploy: ## Deploy application on AWS lambda
-	# Substitution because CFN Mapping Keys do not support the "_" character
-	ARCH=$$(uname -m); \
-	if [ "$$ARCH" = "x86_64" ]; then \
-    	CPU_ARCH="$${ARCH//_/-}"; \
-	else \
-		CPU_ARCH="$$ARCH"; \
-	fi; \
-	sam deploy --parameter-overrides ArchCPU=$$CPU_ARCH
+	@sam deploy --parameter-overrides ArchCPU=$(CPU_ARCH)
 
 sam-logs: ## SAM Logs AWS Lambda Function (Tail)
 	@sam logs -t -n QuarkusNative --stack-name quarkus-native
