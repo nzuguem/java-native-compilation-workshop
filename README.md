@@ -9,12 +9,12 @@ Click the button below to start a new development environment: \
 curl -s "https://get.sdkman.io" | bash
 
 # Install GraalVM
-sdk  install java 21-graalce
+sdk  install java 21.0.1-graal
 
 # Install JDK 21
 sdk  install java 21.0.1-tem
 
-sdk  default java 21-graalce
+sdk  default java 21.0.1-graal
 ```
 
 ## Measurement considerations

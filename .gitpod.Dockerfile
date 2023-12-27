@@ -19,9 +19,9 @@ echo "sdkman_auto_answer=true" >> "$SDKMAN_DIR"/etc/config
 echo "sdkman_auto_env=true" >> "$SDKMAN_DIR"/etc/config
 
 ## Install JDKs
-sdk install java 21-graalce
+sdk install java 21.0.1-graal
 sdk install java 21.0.1-tem
-sdk default java 21-graalce
+sdk default java 21.0.1-graal
 
 ## Install Quarkus CLI
 sdk install quarkus
@@ -53,4 +53,14 @@ pip install --no-cache-dir awscli --upgrade
 
 ## Install SAM CLI
 pip install --no-cache-dir aws-sam-cli --upgrade
+EOF
+
+# Install Scan Vulnerabilities Tools
+RUN <<EOF
+
+set -e
+
+## Install syft and grype
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
+curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
 EOF

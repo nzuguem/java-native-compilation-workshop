@@ -18,7 +18,7 @@ build: ## Build the application
 	@./mvnw package -Dquarkus.package.type=uber-jar
 
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./mvnw package -Pnative
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx"
 
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
 	@../scripts/load.sh $(JVM_COMMAND)
@@ -44,7 +44,7 @@ build-container-image-native: ## Build container image based on native image
 build-QuarkusNative: ## Task executed by SAM CLI to generate the artifact to be deployed on AWS Lambda
 	@./mvnw  package -Pnative  -Dquarkus.native.container-build=true
 	@cp src/main/resources/bootstrap $(ARTIFACTS_DIR)
-	@cp target/quarkus-native-1.0-runner $(ARTIFACTS_DIR)/hello
+	@mv target/quarkus-native-1.0-runner $(ARTIFACTS_DIR)/hello
 	@chmod 777 $(ARTIFACTS_DIR)/hello
 	@chmod 777 $(ARTIFACTS_DIR)/bootstrap
 
@@ -59,4 +59,13 @@ sam-logs: ## SAM Logs AWS Lambda Function (Tail)
 
 sam-delete: ## Delete Stack AWS
 	@sam delete
+
+generate-sbom-native-with-syft: ## Extraction of the SBOM embedded in the native executable, using the syft tool
+	@syft packages -o json=quarkus-native-sbom.json target/quarkus-native-1.0-runner
+
+generate-sbom-native-with-native-inspect: ## Extraction of the SBOM embedded in the native executable, using native-image-inspect
+	@native-image-inspect --sbom target/quarkus-native-1.0-runner > quarkus-native-sbom.json
+
+generate-vulnerability-report: generate-sbom-native-with-syft ## Generation of the vulnerability report
+	@grype sbom:./quarkus-native-sbom.json
 

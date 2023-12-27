@@ -24,3 +24,11 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+graalvmNative {
+	binaries {
+		configureEach {
+			buildArgs.add("--enable-sbom=cyclonedx")
+		}
+	}
+}

@@ -6,7 +6,7 @@
 ```bash
 javac CountUppercase.java
 
-native-image CountUppercase
+native-image --enable-sbom=cyclonedx CountUppercase
 
 time ./countuppercase Hello World
 
@@ -39,7 +39,7 @@ Native-image performance (AOT) is far superior to that of [JIT](../01-graalvm-ji
 ```bash
 javac Task.java
 
-native-image --no-fallback Task
+native-image --enable-sbom=cyclonedx --no-fallback Task
 
 time ./task CountUppercase "Hello World"
 #Exception in thread "main" java.lang.ClassNotFoundException: CountUppercase
@@ -60,7 +60,7 @@ mkdir -p META-INF/native-image
 
 java -agentlib:native-image-agent=config-output-dir=META-INF/native-image Task CountUppercase "Hello World"
 
-native-image --no-fallback Task
+native-image --enable-sbom=cyclonedx --no-fallback Task
 
 time ./task CountUppercase "Hello World"
 #1 (108 ms)

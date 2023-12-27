@@ -6,4 +6,13 @@ help: ## Display this help.
 
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 	@./gradlew build -Dquarkus.package.type=native
-	@mv build/quarkus-cli-1.0-runner hello
+	@cp build/quarkus-cli-1.0-runner hello
+
+generate-sbom-native-with-syft: ## Extraction of the SBOM embedded in the native executable, using the syft tool
+	@syft packages -o json=quarkus-cli-sbom.json build/quarkus-cli-1.0-runner
+
+generate-sbom-native-with-native-inspect: ## Extraction of the SBOM embedded in the native executable, using native-image-inspect
+	@native-image-inspect --sbom build/quarkus-cli-1.0-runner > quarkus-cli-sbom.json
+
+generate-vulnerability-report: generate-sbom-native-with-syft ## Generation of the vulnerability report
+	@grype sbom:./quarkus-cli-sbom.json

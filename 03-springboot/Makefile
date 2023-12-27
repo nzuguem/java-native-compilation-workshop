@@ -43,3 +43,12 @@ record-native: ##  Run application in Native Image mode with performance & Plot 
 build-container-image-native: ## Build container image based on native image
 	@./gradlew bootBuildImage
 
+generate-sbom-native-with-syft: ## Extraction of the SBOM embedded in the native executable, using the syft tool
+	@syft packages -o json=spring-native-sbom.json build/native/nativeCompile/spring-native
+
+generate-sbom-native-with-native-inspect: ## Extraction of the SBOM embedded in the native executable, using native-image-inspect
+	@native-image-inspect --sbom build/native/nativeCompile/spring-native > spring-native-sbom.json
+
+generate-vulnerability-report: generate-sbom-native-with-syft ## Generation of the vulnerability report
+	@grype sbom:./spring-native-sbom.json
+
