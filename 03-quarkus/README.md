@@ -102,6 +102,25 @@ In JVM mode, throughput is higher. At a certain peak load level, JVM mode will h
 make build-container-image-native
 ```
 
+2. Generate a Docker image based on a native image (Using different native executable linking modes)
+
+> For more details, click [here][graalvm-build-static-executables]
+
+-  Fully Dynamic
+```bash
+make build-docker-image-dynamic
+```
+
+- Mostly Static
+```bash
+make build-docker-image-mostly
+```
+
+- Fully Static
+```bash
+make build-docker-image-static
+```
+
 ## Deploy on AWS Lambda
 
 > We use the AWS SAM tool (Template and CLI)
@@ -154,5 +173,4 @@ make sam-delete
 
 <!-- links -->
 [aws-sam-prerequisites]: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html
-
-
+[graalvm-build-static-executables]:https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/

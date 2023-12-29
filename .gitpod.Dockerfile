@@ -27,7 +27,7 @@ sdk default java 21.0.1-graal
 sdk install quarkus
 EOF
 
-# Install monitoring and perf tools : hey
+# Install monitoring and perf tools : hey, upx
 RUN <<EOF
 set -e
 
@@ -35,6 +35,9 @@ sudo apt-get update
 
 ## Install Hey
 sudo apt-get install -y hey
+## Install UPX
+sudo apt-get install -y upx
+
 
 sudo rm -rf /var/lib/apt/lists/*
 

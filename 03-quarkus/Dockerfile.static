@@ -1,0 +1,15 @@
+FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
+
+WORKDIR /code
+
+COPY  mvnw ./
+COPY  .mvn  ./.mvn
+COPY  pom.xml ./
+COPY  src ./src
+
+RUN ./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl"
+
+FROM scratch AS application
+COPY --from=builder /code/target/quarkus-native-1.0-runner /application
+EXPOSE 8000
+ENTRYPOINT ["/application"]

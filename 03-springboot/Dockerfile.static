@@ -1,0 +1,17 @@
+FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
+
+WORKDIR /code
+
+RUN microdnf install findutils
+
+COPY  gradlew ./
+COPY  gradle  ./gradle
+COPY  *.gradle.kts ./
+COPY  src ./src
+
+RUN ./gradlew nativeCompile -PnativeExecutableLinkedMode=static
+
+FROM scratch AS application
+COPY --from=builder /code/build/native/nativeCompile/spring-native /application
+EXPOSE 8000
+ENTRYPOINT ["/application"]

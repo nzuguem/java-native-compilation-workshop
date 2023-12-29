@@ -1,0 +1,17 @@
+FROM container-registry.oracle.com/graalvm/native-image:21.0.1-ol9 AS builder
+
+WORKDIR /code
+
+RUN microdnf install findutils
+
+COPY  gradlew ./
+COPY  gradle  ./gradle
+COPY  *.gradle.kts ./
+COPY  src ./src
+
+RUN ./gradlew nativeCompile
+
+FROM gcr.io/distroless/java-base-debian12 AS application
+COPY --from=builder /code/build/native/nativeCompile/spring-native /application
+EXPOSE 8000
+ENTRYPOINT ["/application"]

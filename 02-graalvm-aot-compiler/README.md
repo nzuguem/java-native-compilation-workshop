@@ -91,6 +91,17 @@ The configuration file (*reflect-config.json*) generated:
 ```
 
 Java's dynamism is not limited to reflection. There are many other elements (JNI, Proxy, etc.). For more details, consult this [doc][native-image-dynamic-java]
+
+## Compress native images
+You can use the ***UPX*** (*Ultimate Packer for eXecutables*) tool to compress the native executable generated.
+
+> ⚠️ Decompression will affect executable startup time
+
+```bash
+upx --lzma --best -o task.upx task
+```
+![UPX Compress Native Image](../images/compress-native-images-upx.png)
+
 <!-- links -->
 [native-image-compilation-output]: https://www.graalvm.org/latest/reference-manual/native-image/overview/BuildOutput/
 [native-image-dynamic-java]: https://www.graalvm.org/latest/reference-manual/native-image/dynamic-features/

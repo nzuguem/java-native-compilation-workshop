@@ -1,3 +1,7 @@
+fun Project.nativeExecutableLinkedMode(): String? {
+	return findProperty("nativeExecutableLinkedMode") as? String
+}
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.2.0"
@@ -29,6 +33,14 @@ graalvmNative {
 	binaries {
 		configureEach {
 			buildArgs.add("--enable-sbom=cyclonedx")
+
+			when (project.nativeExecutableLinkedMode()) {
+				"mostly" -> buildArgs.add("-H:+StaticExecutableWithDynamicLibC")
+				"static" -> {
+					buildArgs.add("--static")
+					buildArgs.add("--libc=musl")
+				}
+			}
 		}
 	}
 }

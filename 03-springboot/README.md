@@ -107,5 +107,26 @@ java -Dspring.aot.enabled=true -jar build/libs/spring-native-1.0.jar
 #Maven
 ./mvnw -Pnative spring-boot:build-image 
 ```
+
+2. Generate a Docker image based on a native image (Using different native executable linking modes) 
+
+> For more details, click [here][graalvm-build-static-executables]
+
+-  Fully Dynamic
+```bash
+make build-docker-image-dynamic
+```
+
+- Mostly Static
+```bash
+make build-docker-image-mostly
+```
+
+- Fully Static
+```bash
+make build-docker-image-static
+```
+
 <!-- links -->
 [graalvm-reachability-matadata-repo]:https://github.com/oracle/graalvm-reachability-metadata
+[graalvm-build-static-executables]:https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/

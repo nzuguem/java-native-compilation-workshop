@@ -52,3 +52,12 @@ generate-sbom-native-with-native-inspect: ## Extraction of the SBOM embedded in 
 generate-vulnerability-report: generate-sbom-native-with-syft ## Generation of the vulnerability report
 	@grype sbom:./spring-native-sbom.json
 
+build-docker-image-dynamic: ## Build Docker image with Dynamic Linked Mode of Native Executable
+	@docker build -t spring-native:dynamic -f Dockerfile.dynamic .
+
+build-docker-image-mostly: ## Build Docker image with Mostly Linked Mode of Native Executable
+	@docker build -t spring-native:mostly -f Dockerfile.mostly .
+
+build-docker-image-static: ## Build Docker image with Static Linked Mode of Native Executable
+	@docker build -t spring-native:static -f Dockerfile.static .
+
