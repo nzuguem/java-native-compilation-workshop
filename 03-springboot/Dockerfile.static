@@ -11,7 +11,14 @@ COPY  src ./src
 
 RUN ./gradlew nativeCompile -PnativeExecutableLinkedMode=static
 
+RUN touch .emptyFile
+
 FROM scratch AS application
 COPY --from=builder /code/build/native/nativeCompile/spring-native /application
+
+# https://github.com/spring-projects/spring-boot/issues/8578#issuecomment-285949594
+COPY --from=builder /code/.emptyFile /tmp/
+COPY --from=builder /code/.emptyFile /static/
+
 EXPOSE 8000
 ENTRYPOINT ["/application"]

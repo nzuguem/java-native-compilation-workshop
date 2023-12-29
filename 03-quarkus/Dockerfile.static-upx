@@ -7,9 +7,9 @@ set -e
 microdnf update -y oraclelinux-release-el9
 microdnf --enablerepo ol9_codeready_builder install xz
 microdnf clean all
-curl --location --output upx-archive.tar.xz "https://github.com/upx/upx/releases/download/v3.96/upx-4.2.1-amd64_linux.tar.xz"
-tar -xJf upx-archive.tar.xz
-cp upx-archive/upx /bin/
+curl --fail --location --retry 3 --output upx-4.2.1-amd64_linux.tar.xz  "https://github.com/upx/upx/releases/download/v4.2.1/upx-4.2.1-amd64_linux.tar.xz"
+tar -xJf upx-4.2.1-amd64_linux.tar.xz
+cp upx-4.2.1-amd64_linux/upx /bin/
 rm -rf upx-*
 
 EOF
