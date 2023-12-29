@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+
 fun Project.nativeExecutableLinkedMode(): String? {
 	return findProperty("nativeExecutableLinkedMode") as? String
 }
@@ -27,6 +29,12 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.getByName<BootBuildImage>("bootBuildImage") {
+	buildpacks = listOf(
+		"docker.io/paketobuildpacks/oracle",
+		"urn:cnb:builder:paketo-buildpacks/java-native-image")
 }
 
 graalvmNative {
