@@ -1,0 +1,35 @@
+FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
+
+RUN <<EOF
+set -e
+
+microdnf install findutils
+
+## Install UPX
+microdnf update -y oraclelinux-release-el9
+microdnf --enablerepo ol9_codeready_builder install xz
+microdnf clean all
+curl --location --output upx-archive.tar.xz "https://github.com/upx/upx/releases/download/v3.96/upx-4.2.1-amd64_linux.tar.xz"
+tar -xJf upx-archive.tar.xz
+cp upx-archive/upx /bin/
+rm -rf upx-*
+
+EOF
+
+WORKDIR /code
+
+COPY  gradlew ./
+COPY  gradle  ./gradle
+COPY  *.gradle.kts ./
+COPY  src ./src
+
+RUN <<EOF
+set -e
+./gradlew nativeCompile -PnativeExecutableLinkedMode=static
+upx --lzma --best -o spring-native-upx build/native/nativeCompile/spring-native
+EOF
+
+FROM scratch AS application
+COPY --from=builder /code/spring-native-upx /application
+EXPOSE 8000
+ENTRYPOINT ["/application"]

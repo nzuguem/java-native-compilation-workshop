@@ -1,0 +1,32 @@
+FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
+
+RUN <<EOF
+set -e
+
+## Install UPX
+microdnf update -y oraclelinux-release-el9
+microdnf --enablerepo ol9_codeready_builder install xz
+microdnf clean all
+curl --location --output upx-archive.tar.xz "https://github.com/upx/upx/releases/download/v3.96/upx-4.2.1-amd64_linux.tar.xz"
+tar -xJf upx-archive.tar.xz
+cp upx-archive/upx /bin/
+rm -rf upx-*
+
+EOF
+
+WORKDIR /code
+
+COPY  mvnw ./
+COPY  .mvn  ./.mvn
+COPY  pom.xml ./
+COPY  src ./src
+
+RUN <<EOF
+./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl"
+upx --lzma --best -o quarkus-native-upx target/quarkus-native-1.0-runner
+EOF
+
+FROM scratch AS application
+COPY --from=builder /code/quarkus-native-upx /application
+EXPOSE 8000
+ENTRYPOINT ["/application"]

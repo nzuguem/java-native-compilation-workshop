@@ -61,3 +61,6 @@ build-docker-image-mostly: ## Build Docker image with Mostly Linked Mode of Nati
 build-docker-image-static: ## Build Docker image with Static Linked Mode of Native Executable
 	@docker build -t spring-native:static -f Dockerfile.static .
 
+build-docker-image-static-upx: ## Build Docker image with Static Linked Mode of Native Executable and compress it with UPX
+	@docker build -t spring-native:static-upx -f Dockerfile.static-upx .
+
