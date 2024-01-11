@@ -1,8 +1,8 @@
 FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
 
-WORKDIR /code
-
 RUN microdnf install findutils
+
+WORKDIR /code
 
 COPY  gradlew ./
 COPY  gradle  ./gradle
