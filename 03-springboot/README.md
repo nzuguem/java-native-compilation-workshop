@@ -127,6 +127,38 @@ make build-docker-image-mostly
 make build-docker-image-static
 ```
 
+## Deploy on Kubernetes (Minikube)
+
+> ⚠️ [Minikube on Gitpod][minikube-on-gitpod-issue] is a bit complicated, due to the Root permissions on the GitPod container, so this part is exclusively reserved for local execution.
+
+1. Provides instructions to point your terminal’s docker-cli to the Docker Engine inside minikube. (Useful for building docker images directly inside minikube)
+
+```bash
+eval $(minikube -p minikube docker-env)
+```
+
+2. Build Docker Image
+
+```bash
+make build-docker-image-mostly
+```
+
+3. Deploy on Minikube
+
+```bash
+make deploy-on-minikube
+```
+
+4. Test
+
+```bash
+make get-minikube-service-url
+
+# New TTY Session
+curl <SERVICE-MINIKUBE-URL>/hello/Kubernetes
+```
+
 <!-- links -->
 [graalvm-reachability-matadata-repo]:https://github.com/oracle/graalvm-reachability-metadata
 [graalvm-build-static-executables]:https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/
+[minikube-on-gitpod-issue]: https://github.com/gitpod-io/gitpod/issues/220

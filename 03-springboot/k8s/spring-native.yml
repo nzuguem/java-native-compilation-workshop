@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-native
+  labels:
+    app: spring-native
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-native
+  template:
+    metadata:
+      labels:
+        app: spring-native
+    spec:
+      containers:
+      - name: spring-native
+        image: docker.io/nzuguem/spring-native:mostly
+        ports:
+        - containerPort: 8080
+          name: http
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-native
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+  selector:
+    app: spring-native

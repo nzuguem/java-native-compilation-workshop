@@ -14,6 +14,22 @@ tasks:
       cd 03-quarkus
     init: |
       make build
+  - name: Register Docker Buildx Cloud Builder
+    before: |
+      (
+        set -e 
+        mkdir -p ~/.docker/cli-plugins
+        wget -q -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx-desktop/releases/download/v0.12.0-desktop.2/buildx-v0.12.0-desktop.2.linux-amd64
+        chmod a+x ~/.docker/cli-plugins/docker-buildx
+      )
+    command: |
+      (
+        set -e
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker buildx create --driver cloud $DOCKER_USERNAME/$DOCKER_BUILDER_NAME
+        echo "Use Docker cloud builder :  --builder cloud-$DOCKER_USERNAME-$DOCKER_BUILDER_NAME"
+      )
+    
 
 vscode:
   extensions:
