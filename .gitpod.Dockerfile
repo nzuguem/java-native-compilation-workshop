@@ -67,3 +67,11 @@ set -e
 curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
 curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
 EOF
+
+# Install Docker Cloud Driver Buildx
+RUN <<EOF
+set -e
+mkdir -p ~/.docker/cli-plugins
+wget -q -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx-desktop/releases/download/v0.12.0-desktop.2/buildx-v0.12.0-desktop.2.linux-amd64
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+EOF
