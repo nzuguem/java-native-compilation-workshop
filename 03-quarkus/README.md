@@ -95,6 +95,30 @@ In JVM mode, throughput is higher. At a certain peak load level, JVM mode will h
 > 
 > ![Quarkus Smart Routing](../images/quarkus-smart-routing.png) 
 
+## JNI / Resource / Proxy / Serialization registration
+To register all aspects of Java dynamism, Quarkus provides a configuration key to add native-image build arguments related to these aspects -> `quarkus.native.additional-build-args`.
+
+How to use :
+- Write all native image configuration files in [src/main/resources](src/main/resources)
+  - `reflection-config.json`, `proxy-config.json`, `resources-config.json`, `jni-config.json`, `serialization-config.json`
+- ```
+  quarkus.native.additional-build-args =\
+      -H:+UnlockExperimentalVMOptions,\
+      -H:ResourceConfigurationResources=resources-config.json,\
+      -H:ReflectionConfigurationResources=reflection-config.json,\
+      -H:DynamicProxyConfigurationResources=proxy-config.json,\
+      -H:SerializationConfigurationResources=serialization-config.json,\
+      -H:JNIConfigurationResources=jni-config.json,\
+      -H:-UnlockExperimentalVMOptions
+  ```
+
+When it comes to resources, Quarkus makes it easy with the configuration keys : 
+- `quarkus.native.resources.includes`
+- `quarkus.native.resources.excludes`
+> The `/hello` endpoint returns the contents of the [hello.txt](src/main/resources/hello.txt) file, embedded in the native image via the `quarkus.native.resources.includes` config Key.
+
+For reflection, Quarkus provides an `@RegisterForReflection` annotation
+
 ## Container Image and Native Image
 1. Generate a Docker image based on a native image
 

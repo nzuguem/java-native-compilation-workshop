@@ -97,6 +97,18 @@ java -Dspring.aot.enabled=true -jar build/libs/spring-native-1.0.jar
 ```
 > If your application starts with the spring.aot.enabled property set to true, then you have higher confidence that it will work when converted to a native image. \
 > It can potentially be used for integration tests, instead of `./gradlew nativeTest` or `./mvnw -PnativeTest test`, as native image tests are quite time-consuming.
+
+## JNI / Resource / Proxy / Serialization registration
+To register all aspects of Java dynamism, Spring Boot provides an API (`RuntimeHints`). It's easy to use:
+
+- Implement the `RuntimeHintsRegistrar` interface 
+- Playing with the `RuntimeHints` API 
+  - `runtimeHints.resources()`, `runtimeHints.reflection()`, `runtimeHints.jni()`, `runtimeHints.proxies()`, `runtimeHints.serialization()`
+  - For reflection, you can also use the `@Reflective` annotation
+- Import the implementation into Spring Boot configuration via `@ImportRuntimeHints`
+
+> The `/hello` endpoint returns the contents of the [hello.txt](src/main/resources/hello.txt) file, embedded in the native image via the `RuntimeHints` API.
+
 ## Container Image and Native Image 
 1. Generate a Docker image based on a native image (using BuildPacks)
 
@@ -156,6 +168,11 @@ make get-minikube-service-url
 
 # New TTY Session
 curl <SERVICE-MINIKUBE-URL>/hello/Kubernetes
+```
+
+5. Undeploy
+```bash
+make undeploy-on-minikube
 ```
 
 <!-- links -->

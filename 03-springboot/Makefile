@@ -65,8 +65,10 @@ build-docker-image-static-upx: ## Build Docker image with Static Linked Mode of 
 	@docker build -t spring-native:static-upx -f Dockerfile.static-upx .
 
 deploy-on-minikube: ## Deploy on minikube
-	@kubectl apply -find k8s/spring-native.yml
+	@kubectl apply -f k8s/spring-native.yml
 
 get-minikube-service-url: ## Get minikube service URL
 	@minikube service --url spring-native
 
+undeploy-on-minikube: ## Undeploy on minikube
+	@kubectl delete -f k8s/spring-native.yml
