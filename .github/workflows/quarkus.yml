@@ -18,12 +18,3 @@ jobs:
       app-path: 03-quarkus
       app-native-image-path: target
       app-native-image-name: '*-runner'
-
-  build-native-image-and-container-image-cli:
-    name: Build and package Quarkus Application CLI
-    uses: ./.github/workflows/native-image.yml
-    with:
-      app-name: quarkus-native-cli
-      app-path: 03-quarkus-cli
-      app-native-image-path: build
-      app-native-image-name: '*-runner'
