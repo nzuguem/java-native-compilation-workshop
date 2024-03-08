@@ -60,14 +60,8 @@ jobs:
 
 
   container-image:
-    name: 🐳 Build Container Image with Native Image for ${{ matrix.platform }} platform
+    name: 🐳 Build Container Image with Native Image
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
     needs:
       - build
     if: ${{ success() }}
@@ -108,6 +102,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           cache-to: type=inline
