@@ -1,25 +1,16 @@
-name: Quarkus Application CI Workflow
+name: Quarkus Application CLI CI Workflow
 
 on:
   push:
     branches:
       - main
     paths:
-      - 03-quarkus/**
-      - .github/workflows/quarkus.yml
+      - 03-quarkus-cli/**
+      - .github/workflows/quarkus-cli.yml
       - .github/workflows/native-image.yml
 
 jobs:
   build-native-image-and-container-image:
-    name: Build and package Quarkus Application
-    uses: ./.github/workflows/native-image.yml
-    with:
-      app-name: quarkus-native
-      app-path: 03-quarkus
-      app-native-image-path: target
-      app-native-image-name: '*-runner'
-
-  build-native-image-and-container-image-cli:
     name: Build and package Quarkus Application CLI
     uses: ./.github/workflows/native-image.yml
     with:

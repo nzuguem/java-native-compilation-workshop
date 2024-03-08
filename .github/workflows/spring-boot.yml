@@ -1,0 +1,19 @@
+name: Spring Boot CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 03-springboot/**
+      - .github/workflows/spring-boot.yml
+      - .github/workflows/native-image.yml
+
+jobs:
+  build-native-image-and-container-image:
+    uses: ./.github/workflows/native-image.yml
+    with:
+      app-name: spring-native
+      app-path: 03-springboot
+      app-native-image-path: build/native/nativeCompile
+      app-native-image-name: spring-native
