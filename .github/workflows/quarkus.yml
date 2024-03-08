@@ -47,7 +47,7 @@ jobs:
 
 
   container-image:
-    name: 🐳 Build Container Image with Native Image
+    name: 🐳 Build Container Image with Native Image for ${{ matrix.platform }} platform
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
