@@ -1,0 +1,2 @@
+!build/**/nativeCompile
+!build/libs/*.jar

@@ -1,0 +1,39 @@
+name: Quarkus CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 03-quarkus/**
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: 21.0.2
+          distribution: graalvm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Build native Image
+        run: |
+          cd 03-quarkus/
+          make build-native-image
+
+      - name: Upload Native Image
+        uses: actions/upload-artifact@v2
+        with:
+          name: quarkus-native-${{ matrix.os }}
+          path: target/*-runner
