@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 03-quarkus/**
+      - .github/workflows/quarkus.yml
 
 env:
   REGISTRY: ghcr.io
