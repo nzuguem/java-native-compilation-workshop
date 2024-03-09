@@ -121,4 +121,5 @@ jobs:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           fail-build: true
           by-cve: true
+          output-format: table
           severity-cutoff: critical
