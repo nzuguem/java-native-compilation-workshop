@@ -107,3 +107,18 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           cache-to: type=inline
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          format: cyclonedx-json
+          artifact-name: ${{ inputs.app-name }}-image-sbom-cyclonedx-json
+
+      - name: Scan image
+        uses: anchore/scan-action@v3
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          fail-build: true
+          by-cve: true
+          severity-cutoff: critical
