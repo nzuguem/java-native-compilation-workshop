@@ -46,10 +46,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
 
+      - name: Setup MUSL
+        run: |
+          scripts/setup-musl.sh
+
       - name: Build native Image
         run: |
           cd ${{ inputs.app-path }}/
-          make build-native-image
+          make build-native-image-static
 
       - name: Upload Native Image
         uses: actions/upload-artifact@v4

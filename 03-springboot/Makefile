@@ -13,6 +13,9 @@ build: ## Build the application
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 	@./gradlew nativeCompile
 
+build-native-image-static: ## Build the native image - In Static Link Mode
+	@./gradlew nativeCompile -PnativeExecutableLinkedMode=static
+
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
 	@../scripts/load.sh $(JVM_COMMAND)
 
