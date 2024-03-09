@@ -3,8 +3,6 @@ set -e
 
 ZLIB_VERSION=1.2.13
 TOOLCHAIN_DIR=`pwd`/x86_64-linux-musl-native
-CC=${TOOLCHAIN_DIR}/bin/gcc
-PATH=${TOOLCHAIN_DIR}/bin:${PATH}
 
 # Download musl
 wget -q http://more.musl.cc/10/x86_64-linux-musl/x86_64-linux-musl-native.tgz

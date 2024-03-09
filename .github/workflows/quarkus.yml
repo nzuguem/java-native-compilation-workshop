@@ -31,7 +31,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: quarkus-native-ubuntu-latest
+          name: quarkus-native
           path: 03-quarkus/target
 
       - uses: aws-actions/setup-sam@v2

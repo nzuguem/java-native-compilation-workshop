@@ -28,14 +28,8 @@ env:
 
 jobs:
   build:
-    name: 🏗️ Build Native Image on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
+    name: 🏗️ Build Native Image
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -52,13 +46,17 @@ jobs:
 
       - name: Build native Image
         run: |
+          TOOLCHAIN_DIR=`pwd`/x86_64-linux-musl-native
+          CC=${TOOLCHAIN_DIR}/bin/gcc
+          PATH=${TOOLCHAIN_DIR}/bin:${PATH}
+          
           cd ${{ inputs.app-path }}/
           make build-native-image-static
 
       - name: Upload Native Image
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.app-name }}-${{ matrix.os }}
+          name: ${{ inputs.app-name }}
           path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
           retention-days: 30
 
@@ -74,7 +72,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.app-name }}-ubuntu-latest
+          name: ${{ inputs.app-name }}
           path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}
 
       - name: Login to Container Registry
