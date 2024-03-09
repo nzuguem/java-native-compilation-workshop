@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: spring-native
-        image: docker.io/nzuguem/spring-native:mostly
+        image: ghcr.io/nzuguem/spring-native:latest
         ports:
         - containerPort: 8080
           name: http
