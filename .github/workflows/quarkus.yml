@@ -45,7 +45,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: 🔍 Validate AWS SAM Template
-        run: sam validate --lint -t template.gha.yml
+        run: sam validate --lint -t 03-quarkus/template.gha.yml
 
       - name: 🚀 AWS SAM Deploy
         run: |
