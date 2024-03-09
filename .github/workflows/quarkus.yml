@@ -18,3 +18,38 @@ jobs:
       app-path: 03-quarkus
       app-native-image-path: target
       app-native-image-name: '*-runner'
+
+  deploy-on-aws:
+    name: ☁️ Deploy Application on AWS Lambda
+    runs-on: ubuntu-latest
+    environment: AWS
+    needs:
+      - build-native-image-and-container-image
+    if: ${{ success() }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: quarkus-native-ubuntu-latest
+          path: 03-quarkus/target
+
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: 🚀 AWS SAM Deploy
+        run: |
+          cd 03-quarkus
+          mkdir -p .aws-sam/build/QuarkusNative
+          mv target/quarkus-native-1.0-runner .aws-sam/build/QuarkusNative/hello
+          cp src/main/resources/bootstrap .aws-sam/build/QuarkusNative/bootstrap
+          chmod 777 .aws-sam/build/QuarkusNative/hello
+          chmod 777 .aws-sam/build/QuarkusNative/bootstrap
+          make sam-deploy
