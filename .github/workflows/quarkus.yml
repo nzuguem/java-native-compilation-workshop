@@ -23,6 +23,7 @@ jobs:
     name: ☁️ Deploy Application on AWS Lambda
     runs-on: ubuntu-latest
     environment: AWS
+    continue-on-error: true
     needs:
       - build-native-image-and-container-image
     if: ${{ success() }}
