@@ -44,12 +44,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      - name: 🔍 Validate AWS SAM Template
+        run: sam validate --lint -t template.gha.yml
+
       - name: 🚀 AWS SAM Deploy
         run: |
           cd 03-quarkus
-          mkdir -p .aws-sam/build/QuarkusNative
-          mv target/quarkus-native-1.0-runner .aws-sam/build/QuarkusNative/hello
-          cp src/main/resources/bootstrap .aws-sam/build/QuarkusNative/bootstrap
-          chmod 777 .aws-sam/build/QuarkusNative/hello
-          chmod 777 .aws-sam/build/QuarkusNative/bootstrap
-          make sam-deploy
+          mkdir -p gha/aws
+          cp target/quarkus-native-1.0-runner gha/aws/hello
+          cp src/main/resources/bootstrap gha/aws/bootstrap
+          chmod 777 gha/aws/hello
+          chmod 777 gha/aws/bootstrap
+          sam deploy -t template.gha.yml

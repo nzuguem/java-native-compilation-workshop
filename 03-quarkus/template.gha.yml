@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Quarkus Native on AWS Lambda
+
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 256
+
+
+Resources:
+  QuarkusNative:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      Runtime: provided.al2
+      CodeUri: gha/aws
+      Handler: bootstrap.is.real.handler
+      Layers:
+        # Lambda Web Adapter (LWA)
+        - arn:aws:lambda:eu-west-1:753240598075:layer:LambdaAdapterLayerX86:17
+      FunctionUrlConfig:
+        AuthType: NONE
+      Environment:
+        Variables:
+          RUST_LOG: debug
+          ASYNC_INIT: true
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  FunctionUrl:
+    Description: "Function URL of Quarkus Native"
+    Value: !GetAtt QuarkusNativeUrl.FunctionUrl
