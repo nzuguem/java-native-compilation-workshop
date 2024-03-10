@@ -20,7 +20,9 @@ on:
         required: true
         type: string
 
-
+defaults:
+  run:
+    working-directory:  ${{ inputs.app-path }}
 
 env:
   REGISTRY: ghcr.io
@@ -42,7 +44,7 @@ jobs:
 
       - name: Setup MUSL
         run: |
-          scripts/setup-musl.sh
+          ../scripts/setup-musl.sh
 
       - name: Build native Image
         run: |
@@ -50,14 +52,13 @@ jobs:
           CC=${TOOLCHAIN_DIR}/bin/gcc
           PATH=${TOOLCHAIN_DIR}/bin:${PATH}
           
-          cd ${{ inputs.app-path }}/
           make build-native-image-static
 
       - name: Upload Native Image
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.app-name }}
-          path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
+          path: ${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
           retention-days: 30
 
 
@@ -100,7 +101,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ${{ inputs.app-path }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
