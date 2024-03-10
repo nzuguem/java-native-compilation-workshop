@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.app-name }}
-          path: ${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
+          path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
           retention-days: 30
 
 
