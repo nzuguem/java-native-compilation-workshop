@@ -44,10 +44,10 @@ jobs:
         with:
           use-installer: true
 
-      - uses: aws-actions/configure-aws-credentials@v2
+      - uses: aws-actions/configure-aws-credentials@v4
         id: aws-creds
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubAction-AssumeRoleWithAction
           output-credentials: true
           aws-region: eu-west-1
 
