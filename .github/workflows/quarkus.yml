@@ -27,30 +27,35 @@ jobs:
     needs:
       - build-native-image-and-container-image
     if: ${{ success() }}
+    permissions:
+      id-token: write
+    defaults:
+      run:
+        working-directory: 03-quarkus
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
           name: quarkus-native
-          path: 03-quarkus/target
+          path: target
 
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
 
       - uses: aws-actions/configure-aws-credentials@v2
+        id: aws-creds
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          output-credentials: true
           aws-region: eu-west-1
 
       - name: 🔍 Validate AWS SAM Template
-        run: sam validate --lint -t 03-quarkus/template.gha.yml
+        run: sam validate --lint -t template.gha.yml
 
       - name: 🚀 AWS SAM Deploy
         run: |
-          cd 03-quarkus
           mkdir -p gha/aws
           cp target/quarkus-native-1.0-runner gha/aws/hello
           cp src/main/resources/bootstrap gha/aws/bootstrap

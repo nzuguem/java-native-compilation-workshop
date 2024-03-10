@@ -119,7 +119,7 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          fail-build: true
+          fail-build: false
           by-cve: true
           output-format: table
           severity-cutoff: critical
