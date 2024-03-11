@@ -14,8 +14,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Architectures:
-        - x86_64
-      Runtime: provided.al2
+        - arm64
+      Runtime: provided.al2023
       CodeUri: gha/aws
       Handler: bootstrap.is.real.handler
       Layers:
@@ -28,8 +28,6 @@ Resources:
           RUST_LOG: debug
           ASYNC_INIT: true
           AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
-    Metadata:
-      BuildMethod: makefile
 
 Outputs:
   FunctionUrl:

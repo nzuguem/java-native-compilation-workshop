@@ -17,3 +17,33 @@ jobs:
       app-path: 03-springboot
       app-native-image-path: build/native/nativeCompile
       app-native-image-name: spring-native
+
+  deploy-on-minikube:
+    name: ☸️ Deploy and Test Application on Minikube
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs:
+      - build-native-image-and-container-image
+    if: ${{ success() }}
+    defaults:
+      run:
+        working-directory: 03-springboot
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start minikube
+        uses: medyagh/setup-minikube@latest
+
+      - name: Try the cluster !
+        run: kubectl get pods -A
+
+      - name: Deploy to minikube
+        run: |
+          make deploy-on-minikube
+
+      - name: Test service URL
+        run: |
+          minikube service list
+          minikube service spring-native --url
+          echo -n "------------------opening the service------------------"
+          curl $(minikube service spring-native --url)/hello/SpringNative
