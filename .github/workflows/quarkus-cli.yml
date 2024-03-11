@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-native-image-and-container-image:
-    name: Build and package Quarkus Application CLI
+    secrets: inherit
     uses: ./.github/workflows/native-image.yml
     with:
       app-name: quarkus-native-cli

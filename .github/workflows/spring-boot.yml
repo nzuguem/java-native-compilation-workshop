@@ -1,4 +1,4 @@
-name: Spring Boot CI Workflow
+name: Spring Boot CI/CD Workflow
 
 on:
   push:
@@ -12,6 +12,7 @@ on:
 jobs:
   build-native-image-and-container-image:
     uses: ./.github/workflows/native-image.yml
+    secrets: inherit
     with:
       app-name: spring-native
       app-path: 03-springboot
@@ -38,7 +39,7 @@ jobs:
 
       - name: Deploy to Cloud Run
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: spring-native
           region: europe-west9-a

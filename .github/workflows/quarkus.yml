@@ -1,4 +1,4 @@
-name: Quarkus Application CI Workflow
+name: Quarkus Application CI/CD Workflow
 
 on:
   push:
@@ -11,8 +11,8 @@ on:
 
 jobs:
   build-native-image-and-container-image:
-    name: 🏗️ Build and package Quarkus Application
     uses: ./.github/workflows/native-image.yml
+    secrets: inherit
     with:
       app-name: quarkus-native
       app-path: 03-quarkus
