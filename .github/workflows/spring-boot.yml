@@ -18,32 +18,29 @@ jobs:
       app-native-image-path: build/native/nativeCompile
       app-native-image-name: spring-native
 
-  deploy-on-minikube:
-    name: ☸️ Deploy and Test Application on Minikube
+  deploy-on-cloud-run:
+    name: ☸️ Deploy Application To Cloud Run
     runs-on: ubuntu-latest
     continue-on-error: true
+    environment: GCP Cloud Run
     needs:
       - build-native-image-and-container-image
     if: ${{ success() }}
-    defaults:
-      run:
-        working-directory: 03-springboot
     steps:
-      - uses: actions/checkout@v4
 
-      - name: Start minikube
-        uses: medyagh/setup-minikube@latest
+      - name: Google Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          token_format: access_token
 
-      - name: Try the cluster !
-        run: kubectl get pods -A
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: spring-native
+          region: europe-west9-a
+          image: docker.io/nzuguem/spring-native:latest
 
-      - name: Deploy to minikube
-        run: |
-          make deploy-on-minikube
-
-      - name: Test service URL
-        run: |
-          minikube service list
-          minikube service spring-native --url
-          echo -n "------------------opening the service------------------"
-          curl $(minikube service spring-native --url)/hello/SpringNative
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}

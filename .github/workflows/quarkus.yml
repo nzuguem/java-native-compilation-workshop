@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-native-image-and-container-image:
-    name: Build and package Quarkus Application
+    name: 🏗️ Build and package Quarkus Application
     uses: ./.github/workflows/native-image.yml
     with:
       app-name: quarkus-native
@@ -22,7 +22,7 @@ jobs:
   deploy-on-aws:
     name: ☁️ Deploy Application on AWS Lambda
     runs-on: ubuntu-latest
-    environment: AWS
+    environment: AWS Lambda
     continue-on-error: true
     needs:
       - build-native-image-and-container-image
@@ -47,7 +47,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         id: aws-creds
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubAction-AssumeRoleWithAction
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           output-credentials: true
           aws-region: eu-west-1
 
