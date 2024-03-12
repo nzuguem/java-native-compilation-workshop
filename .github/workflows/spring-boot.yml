@@ -44,6 +44,11 @@ jobs:
           service: spring-native
           region: europe-west9-a
           image: docker.io/nzuguem/spring-native:latest
+          suffix: ${{ github.sha }}
+          flags: >
+            --min-instances=0
+            --allow-unauthenticated
+            --concurrency=1
 
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}

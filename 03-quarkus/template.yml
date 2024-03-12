@@ -38,6 +38,7 @@ Resources:
     Properties:
       Architectures:
         - !FindInMap [ArchitecturesMap, !Ref ArchCPU, "arch"]
+      ReservedConcurrentExecutions: 1
       Runtime: provided.al2
       CodeUri: .
       Handler: bootstrap.is.real.handler
