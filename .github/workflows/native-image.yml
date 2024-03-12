@@ -39,18 +39,11 @@ jobs:
           java-version: 21.0.2
           distribution: graalvm
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-
-      - name: Setup MUSL
-        run: |
-          ../scripts/setup-musl.sh
+          native-image-job-reports: true
+          native-image-musl: true
 
       - name: Build native Image
         run: |
-          TOOLCHAIN_DIR=`pwd`/x86_64-linux-musl-native
-          CC=${TOOLCHAIN_DIR}/bin/gcc
-          PATH=${TOOLCHAIN_DIR}/bin:${PATH}
-          
           make build-native-image-static
 
       - name: Upload Native Image
