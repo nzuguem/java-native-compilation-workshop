@@ -28,7 +28,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.app-name }}
+  IMAGE_NAME_BASE: ${{ github.repository_owner }}/${{ inputs.app-name }}
 
 jobs:
   build:
@@ -120,6 +120,12 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
+
+      - name: Set lower case owner name
+        run: |
+          echo "IMAGE_NAME=${IMAGE_NAME_BASE_UP,,}" >> ${GITHUB_ENV}
+        env:
+          IMAGE_NAME_BASE_UP: ${{ env.IMAGE_NAME_BASE }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
