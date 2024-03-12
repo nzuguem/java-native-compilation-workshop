@@ -23,7 +23,9 @@ jobs:
     name: ☸️ Deploy Application To Cloud Run
     runs-on: ubuntu-latest
     continue-on-error: true
-    environment: GCP Cloud Run
+    environment:
+      name: GCP Cloud Run
+      url: ${{ steps.env-url.outputs.run-url }}
     needs:
       - build-native-image-and-container-image
     if: ${{ success() }}
@@ -50,5 +52,7 @@ jobs:
             --allow-unauthenticated
             --concurrency=1
 
-      - name: Show Output
-        run: echo ${{ steps.deploy.outputs.url }}
+      - name: 🔗 Get Application URL
+        id: env-url
+        run: |
+          echo "run-url=${{ steps.deploy.outputs.url }}" >> $GITHUB_OUTPUT

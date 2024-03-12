@@ -8,7 +8,7 @@ build-native-image: ## Build the native image - The native image generated is hi
 	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx"
 
 build-native-image-static: ## Build the native image - In Static Link Mode
-	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl"
+	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json"
 
 generate-sbom-native-with-syft: ## Extraction of the SBOM embedded in the native executable, using the syft tool
 	@syft packages -o json=quarkus-cli-sbom.json build/quarkus-cli-1.0-runner

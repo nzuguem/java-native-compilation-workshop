@@ -22,7 +22,9 @@ jobs:
   deploy-on-aws:
     name: ☁️ Deploy Application on AWS Lambda
     runs-on: ubuntu-latest
-    environment: AWS Lambda
+    environment:
+      name: AWS Lambda
+      url: ${{ steps.env-url.outputs.function-url }}
     continue-on-error: true
     needs:
       - build-native-image-and-container-image
@@ -62,3 +64,11 @@ jobs:
           chmod 777 gha/aws/hello
           chmod 777 gha/aws/bootstrap
           sam deploy -t template.gha.yml
+
+      - name: 🔗 Get Application URL
+        id: env-url
+        run: |
+          echo "function-url=$(aws cloudformation describe-stacks \
+          --stack-name quarkus-native \
+          --query 'Stacks[0].Outputs[?OutputKey==`FunctionUrl`].OutputValue' \
+          --output text)" >> $GITHUB_OUTPUT
