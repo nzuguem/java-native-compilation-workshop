@@ -15,7 +15,6 @@ Resources:
     Properties:
       Architectures:
         - x86_64
-      ReservedConcurrentExecutions: 1
       Runtime: provided.al2023
       CodeUri: gha/aws
       Handler: bootstrap.is.real.handler
