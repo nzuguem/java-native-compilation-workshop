@@ -18,6 +18,7 @@ jobs:
       app-path: 03-quarkus
       app-native-image-path: target
       app-native-image-name: '*-runner'
+      app-java-builder: maven
 
   deploy-on-aws:
     name: ☁️ Deploy Application on AWS Lambda

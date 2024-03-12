@@ -4,21 +4,27 @@ on:
   workflow_call:
     inputs:
       app-name:
-        description: "Application Name"
+        description: Application Name
         required: true
         type: string
       app-path:
-        description: "Path of Application"
+        description: Path of Application
         required: true
         type: string
       app-native-image-path:
-        description: "Folder containing the native image"
+        description: Folder containing the native image
         required: true
         type: string
       app-native-image-name:
-        description: "Name for Native Image Generated. Can be a REGEX"
+        description: Name for Native Image Generated. Can be a REGEX
         required: true
         type: string
+      app-java-builder:
+        description: Application Java Builder
+        required: true
+        type: string
+
+
 
 env:
   REGISTRY: ghcr.io
@@ -41,6 +47,26 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: true
           native-image-musl: true
+
+      - uses: actions/cache@v4
+        name: Maven Cache
+        if: inputs.app-java-builder == 'maven'
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - uses: actions/cache@v4
+        name: Grable
+        if: inputs.app-java-builder == 'gradle'
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Build native Image
         run: |

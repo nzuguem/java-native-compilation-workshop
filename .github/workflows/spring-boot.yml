@@ -18,6 +18,7 @@ jobs:
       app-path: 03-springboot
       app-native-image-path: build/native/nativeCompile
       app-native-image-name: spring-native
+      app-java-builder: gradle
 
   deploy-on-cloud-run:
     name: ☸️ Deploy Application To Cloud Run
