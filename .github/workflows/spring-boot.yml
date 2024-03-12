@@ -42,7 +42,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: spring-native
-          region: europe-west9-a
+          region: europe-west9
           image: docker.io/nzuguem/spring-native:latest
           suffix: ${{ github.sha }}
           flags: >
