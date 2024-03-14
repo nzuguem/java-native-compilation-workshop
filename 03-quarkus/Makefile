@@ -17,11 +17,17 @@ help: ## Display this help.
 build: ## Build the application
 	@./mvnw package -Dquarkus.package.type=uber-jar
 
+run: ## Launch Application
+	@./mvnw quarkus:dev
+
+run-native: ## Launch Native Application
+	@./target/quarkus-native-1.0-runner
+
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx"
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","-H:+BuildReport"
 
 build-native-image-static: ## Build the native image - In Static Link Mode
-	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json"
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","-H:+BuildReport"
 
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
 	@../scripts/load.sh $(JVM_COMMAND)

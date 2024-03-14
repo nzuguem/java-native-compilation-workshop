@@ -6,7 +6,7 @@ fun Project.nativeExecutableLinkedMode(): String? {
 
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.2"
+	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
 	id("org.graalvm.buildtools.native") version "0.9.28"
 }
@@ -24,6 +24,8 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -41,6 +43,7 @@ graalvmNative {
 	binaries {
 		configureEach {
 			buildArgs.add("--enable-sbom=cyclonedx")
+			buildArgs.add("-H:+BuildReport")
 
 			when (project.nativeExecutableLinkedMode()) {
 				"mostly" -> buildArgs.add("-H:+StaticExecutableWithDynamicLibC")

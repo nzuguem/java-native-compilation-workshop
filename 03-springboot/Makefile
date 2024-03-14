@@ -10,6 +10,12 @@ help: ## Display this help.
 build: ## Build the application
 	@./gradlew build
 
+run: ## Launch Application
+	@./gradlew bootRun
+
+run-native: ## Launch Native Application
+	@./build/native/nativeCompile/spring-native
+
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 	@./gradlew nativeCompile
 

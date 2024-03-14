@@ -79,6 +79,13 @@ jobs:
           path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}/${{ inputs.app-native-image-name }}
           retention-days: 30
 
+      - name: Upload Build Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.app-name }}-html-build-report
+          path: ${{ inputs.app-path }}/${{ inputs.app-native-image-path }}/**/*-build-report.html
+          retention-days: 30
+
 
   container-image:
     name: 🐳 Build Container Image with Native Image
