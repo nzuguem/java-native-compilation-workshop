@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/graalvm/native-image:21.0.1-ol9 AS builder
+FROM container-registry.oracle.com/graalvm/native-image:23.0.0-ol9 AS builder
 
 WORKDIR /code
 
@@ -9,7 +9,7 @@ COPY  .mvn  ./.mvn
 COPY  pom.xml ./
 COPY  src ./src
 
-RUN ./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx"
+RUN ./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath"
 
 FROM gcr.io/distroless/java-base-debian12 AS application
 COPY --from=builder /code/target/quarkus-native-1.0-runner /application

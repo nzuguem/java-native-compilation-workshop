@@ -2,8 +2,6 @@ name: Quarkus Application CLI CI Workflow
 
 on:
   push:
-    branches:
-      - main
     paths:
       - 03-quarkus-cli/**
       - .github/workflows/quarkus-cli.yml

@@ -2,8 +2,6 @@ name: Spring Boot CI/CD Workflow
 
 on:
   push:
-    branches:
-      - main
     paths:
       - 03-springboot/**
       - .github/workflows/spring-boot.yml
@@ -29,7 +27,7 @@ jobs:
       url: ${{ steps.env-url.outputs.run-url }}
     needs:
       - build-native-image-and-container-image
-    if: ${{ success() }}
+    if: github.ref == 'refs/heads/main'
     steps:
 
       - uses: actions/checkout@v4
