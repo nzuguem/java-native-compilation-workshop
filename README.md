@@ -1,21 +1,11 @@
 # Native compilation workshop in Java
 
+[![Quarkus Application CI/CD Workflow](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/quarkus.yml/badge.svg)](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/quarkus.yml)
+[![Spring Boot CI/CD Workflow](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/spring-boot.yml/badge.svg)](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/spring-boot.yml)
+[![Quarkus Application CLI CI Workflow](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/quarkus-cli.yml/badge.svg)](https://github.com/nzuguem/java-native-compilation-workshop/actions/workflows/quarkus-cli.yml)
+
 Click the button below to start a new development environment: \
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/nzuguem/java-native-compilation-workshop)
-
-
-## Install SDKs
-```bash
-curl -s "https://get.sdkman.io" | bash
-
-# Install GraalVM
-sdk  install java 21.0.1-graal
-
-# Install JDK 21
-sdk  install java 21.0.1-tem
-
-sdk  default java 21.0.1-graal
-```
 
 ## Measurement considerations
 > ⚠️ All measurements are highly dependent on the characteristics of my computer. So feel free to replay the commands to make up your own mind.
