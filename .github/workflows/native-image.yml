@@ -42,7 +42,7 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: 21.0.2
+          java-version: 23
           distribution: graalvm
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: true
@@ -124,15 +124,24 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-
       - name: Set lower case owner name
         run: |
           echo "IMAGE_NAME=${IMAGE_NAME_BASE_UP,,}" >> ${GITHUB_ENV}
         env:
           IMAGE_NAME_BASE_UP: ${{ env.IMAGE_NAME_BASE }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_NAME }}
+          tags: |
+            # branch event
+            type=ref,event=branch
+            # set latest tag for main branch
+            type=raw,value=latest,enable=${{ github.ref_name == 'main' }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -140,12 +149,9 @@ jobs:
         with:
           context: ${{ inputs.app-path }}
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           cache-to: type=inline
@@ -153,14 +159,14 @@ jobs:
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         with:
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name	 }}
           format: cyclonedx-json
           artifact-name: ${{ inputs.app-name }}-image-sbom-cyclonedx-json
 
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name	 }}
           fail-build: false
           by-cve: true
           output-format: table

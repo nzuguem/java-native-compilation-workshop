@@ -6,16 +6,16 @@ fun Project.nativeExecutableLinkedMode(): String? {
 
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.3"
+	id("org.springframework.boot") version "3.3.4"
 	id("io.spring.dependency-management") version "1.1.4"
-	id("org.graalvm.buildtools.native") version "0.9.28"
+	id("org.graalvm.buildtools.native") version "0.10.3"
 }
 
 group = "me.nzuguem"
 version = "1.0"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_23
 }
 
 repositories {
@@ -42,11 +42,12 @@ tasks.getByName<BootBuildImage>("bootBuildImage") {
 graalvmNative {
 	binaries {
 		configureEach {
-			buildArgs.add("--enable-sbom=cyclonedx")
-			buildArgs.add("-H:+BuildReport")
+			buildArgs.add("--enable-sbom=classpath,export")
+			buildArgs.add("--emit=build-report")
+			buildArgs.add("-Ob")
 
 			when (project.nativeExecutableLinkedMode()) {
-				"mostly" -> buildArgs.add("-H:+StaticExecutableWithDynamicLibC")
+				"mostly" -> buildArgs.add("--static-nolibc")
 				"static" -> {
 					buildArgs.add("--static")
 					buildArgs.add("--libc=musl")

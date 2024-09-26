@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/graalvm/native-image:21.0.1-muslib-ol9 AS builder
+FROM container-registry.oracle.com/graalvm/native-image:23.0.0-muslib-ol9 AS builder
 
 RUN <<EOF
 set -e
@@ -22,7 +22,7 @@ COPY  pom.xml ./
 COPY  src ./src
 
 RUN <<EOF
-./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=cyclonedx","--static","--libc=musl"
+./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl"
 upx --lzma --best -o quarkus-native-upx target/quarkus-native-1.0-runner
 EOF
 

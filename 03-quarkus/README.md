@@ -23,7 +23,7 @@ In this way, Quarkus' role in relation to GraalVM is to elaborate the metadata (
 1. Create Native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
 
 ```bash
-./mvnw -Pnative package
+./mvnw -Pnative package -Dquarkus.native.additional-build-args="-Ob"
 ```
 
 2. Run the application in native image mode and compare with JVM mode

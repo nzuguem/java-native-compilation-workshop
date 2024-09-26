@@ -4,3 +4,5 @@
 **/*.log
 **/plot*
 .quarkus
+*.sbom.json
+*.html

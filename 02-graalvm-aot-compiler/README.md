@@ -6,7 +6,7 @@
 ```bash
 javac CountUppercase.java
 
-native-image --enable-sbom=cyclonedx CountUppercase
+native-image --enable-sbom=classpath,export -Ob --emit=build-report CountUppercase
 
 time ./countuppercase Hello World
 
@@ -28,6 +28,16 @@ With 10 million loop turns, the execution time with C2/Graal is less than with t
 Below are the native compilation logs. For more information on this output, see this [doc][native-image-compilation-output]
 ![JIT Compiler Log](../images/native-image-build-output.png)
 
+> ℹ️ Explanation of a few parameters :
+> - `--enable-sbom=classpath` : we also added a feature to include SBOM as a **Java resource** on the classpath at `META-INF/native-image/sbom.json`.
+> - `-Ob` : Use [`QBM`][graalvm-qbm] (*Quick Build Mode*) for Faster Builds. Consider using the quick build mode (`-Ob`) to speed up your builds during development. More precisely, this mode reduces the number of optimizations performed by the Graal compiler and thus reduces the overall time of the compilation stage.
+>   - b - optimize for fastest build time
+>   - s - optimize for size
+>   - 0 - no optimizations, 
+>   - 1 - basic optimizations
+>   - 2 - advanced optimizations
+>   - 3 - all optimizations for best performance
+
 ## Performance measurement
 - **Startup Time** *approximately equal* ***0,024 s***
 - **Memory** *approximately equal* ***67 MB***
@@ -39,7 +49,7 @@ Native-image performance (AOT) is far superior to that of [JIT](../01-graalvm-ji
 ```bash
 javac Task.java
 
-native-image --enable-sbom=cyclonedx --no-fallback Task
+native-image --enable-sbom=classpath,export -Ob --no-fallback Task
 
 time ./task CountUppercase "Hello World"
 #Exception in thread "main" java.lang.ClassNotFoundException: CountUppercase
@@ -60,7 +70,7 @@ mkdir -p META-INF/native-image
 
 java -agentlib:native-image-agent=config-output-dir=META-INF/native-image Task CountUppercase "Hello World"
 
-native-image --enable-sbom=cyclonedx --no-fallback Task
+native-image --enable-sbom=classpath,export -Ob --no-fallback Task
 
 time ./task CountUppercase "Hello World"
 #1 (108 ms)
@@ -75,19 +85,23 @@ time ./task CountUppercase "Hello World"
 #total: 19999998 (832 ms)
 #0,80s user 0,02s system 95% cpu 0,856 total 68464 kb rss
 ```
-The configuration file (*reflect-config.json*) generated:
+The configuration file (*reachability-metadata.json*) generated:
 ```json
-[
-  {
-    "name":"CountUppercase",
-    "methods":[
-       {
-          "name":"process",
-          "parameterTypes":["java.lang.String"] 
-       }
-    ]
-  }
-]
+{
+  "reflection": [
+    {
+      "type": "CountUppercase",
+      "methods": [
+        {
+          "name": "process",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    }
+  ]
+}
 ```
 
 Java's dynamism is not limited to reflection. There are many other elements (JNI, Proxy, etc.). For more details, consult this [doc][native-image-dynamic-java]
@@ -105,3 +119,4 @@ upx --lzma --best -o task.upx task
 <!-- links -->
 [native-image-compilation-output]: https://www.graalvm.org/latest/reference-manual/native-image/overview/BuildOutput/
 [native-image-dynamic-java]: https://www.graalvm.org/latest/reference-manual/native-image/dynamic-features/
+[graalvm-qbm]: https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md#qbm-use-quick-build-mode-for-faster-builds
