@@ -23,6 +23,11 @@ Resources:
         - arn:aws:lambda:eu-west-1:753240598075:layer:LambdaAdapterLayerX86:17
       FunctionUrlConfig:
         AuthType: NONE
+      LoggingConfig:
+        LogFormat: JSON 
+        ApplicationLogLevel: DEBUG 
+        SystemLogLevel: INFO 
+        LogGroup: !Ref QuarkusNativeLogGroup
       Environment:
         Variables:
           RUST_LOG: debug
@@ -30,6 +35,14 @@ Resources:
           AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
           QUARKUS_OTEL_ENABLED: false
           QUARKUS_MICROMETER_EXPORT_OTLP_ENABLED: false
+
+  QuarkusNativeLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/java-native-compilation-workshop/lambda/quarkus-native
+      LogGroupClass: INFREQUENT_ACCESS
+      RetentionInDays: 7
+      
 Outputs:
   FunctionUrl:
     Description: "Function URL of Quarkus Native"
