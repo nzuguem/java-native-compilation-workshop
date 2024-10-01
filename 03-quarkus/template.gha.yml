@@ -28,7 +28,8 @@ Resources:
           RUST_LOG: debug
           ASYNC_INIT: true
           AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
-
+          QUARKUS_OTEL_ENABLED: false
+          QUARKUS_MICROMETER_EXPORT_OTLP_ENABLED: false
 Outputs:
   FunctionUrl:
     Description: "Function URL of Quarkus Native"

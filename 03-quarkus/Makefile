@@ -1,7 +1,6 @@
-default: help
-
 JVM_COMMAND="java -Xmx256m -jar target/quarkus-native-1.0-runner.jar"
 NATIVE_IMAGE_COMMAND="./target/quarkus-native-1.0-runner -Xmx256m"
+QUARKUS_999_SNAPHOT="-s settings.xml -Dquarkus.platform.version=999-SNAPSHOT"
 
 # Substitution because CFN Mapping Keys do not support the "_" character
 ARCH := $(shell uname -m)
@@ -11,11 +10,16 @@ else
     CPU_ARCH := $(ARCH)
 endif
 
+default: help
+
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 build: ## Build the application
-	@./mvnw package -Dquarkus.package.type=uber-jar
+	@./mvnw package -Dquarkus.package.type=uber-jar $(MAVEN_CLI_OPTS)
+
+build-with-quarkus-999-snapshot: ## Build the application with quarkus 999-SNAPHOT
+	@$(MAKE) build MAVEN_CLI_OPTS=$(QUARKUS_999_SNAPHOT)
 
 run: ## Launch Application
 	@./mvnw quarkus:dev
@@ -24,10 +28,16 @@ run-native: ## Launch Native Application
 	@./target/quarkus-native-1.0-runner
 
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--emit=build-report","-Ob"
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--emit=build-report","-Ob" $(MAVEN_CLI_OPTS)
+
+build-native-image-with-quarkus-999-snapshot: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS) with quarkus 999-SNAPHOT
+	@$(MAKE) build-native-image MAVEN_CLI_OPTS=$(QUARKUS_999_SNAPHOT)
 
 build-native-image-static: ## Build the native image - In Static Link Mode
-	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob"
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob" $(MAVEN_CLI_OPTS)
+
+build-native-image-static-with-quarkus-999-snapshot: ## Build the native image - In Static Link Mode with quarkus 999-SNAPHOT
+	@@$(MAKE) build-native-image-static MAVEN_CLI_OPTS=$(QUARKUS_999_SNAPHOT)
 
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
 	@../scripts/load.sh $(JVM_COMMAND)

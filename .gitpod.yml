@@ -14,14 +14,15 @@ tasks:
       cd 03-quarkus
     init: |
       make build
-  - name: Register Docker Cloud Builder
+  - name: Register Docker Cloud Builder and Start Grafana - LGTM
     command: |
       (
         set -e
         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
         docker buildx create --driver cloud $DOCKER_USERNAME/$DOCKER_BUILDER_NAME
         echo "Use Docker cloud builder :  --builder cloud-$DOCKER_USERNAME-$DOCKER_BUILDER_NAME"
-      ) 
+        docker compose -f compose.lgtm.yml up -d --wait
+      )
 
 vscode:
   extensions:

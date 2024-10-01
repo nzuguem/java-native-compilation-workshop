@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
+import io.quarkus.logging.Log;
+
 @Path("hello")
 public class HelloController {
 
@@ -19,6 +21,9 @@ public class HelloController {
     @Path("{name}")
     @Produces(MediaType.TEXT_PLAIN)
     public String hello(@PathParam("name") String name) {
+
+        Log.infof("say hello %s", name);
+
         return "Hello " + name;
     }
 
@@ -31,9 +36,14 @@ public class HelloController {
         ) {
             var content = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
-
+            
+            Log.info("say hello from file");
+        
             return Response.ok(content).build();
         } catch (IOException exception) {
+
+            Log.error(exception.getMessage(), exception);
+
             return Response.serverError().build();
         }
     }
