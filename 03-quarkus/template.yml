@@ -46,6 +46,11 @@ Resources:
         - !FindInMap [ArchitecturesMap, !Ref ArchCPU, "lwa"]
       FunctionUrlConfig:
         AuthType: NONE
+      LoggingConfig:
+        LogFormat: JSON 
+        ApplicationLogLevel: DEBUG 
+        SystemLogLevel: INFO 
+        LogGroup: !Ref QuarkusNativeLogGroup
       Environment:
         Variables:
           RUST_LOG: debug
@@ -55,6 +60,13 @@ Resources:
           QUARKUS_MICROMETER_EXPORT_OTLP_ENABLED: false
     Metadata:
       BuildMethod: makefile
+  
+  QuarkusNativeLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/java-native-compilation-workshop/lambda/quarkus-native
+      LogGroupClass: INFREQUENT_ACCESS
+      RetentionInDays: 7
 
 Outputs:
   FunctionUrl:
