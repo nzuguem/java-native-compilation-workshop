@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 import io.quarkus.logging.Log;
+import io.smallrye.common.annotation.NonBlocking;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 
 @Path("hello")
 public class HelloController {
@@ -20,6 +22,7 @@ public class HelloController {
     @GET
     @Path("{name}")
     @Produces(MediaType.TEXT_PLAIN)
+    @NonBlocking
     public String hello(@PathParam("name") String name) {
 
         Log.infof("say hello %s", name);
@@ -29,6 +32,7 @@ public class HelloController {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @RunOnVirtualThread // No interest in CPU Bound workloads
     public Response hello() {
 
         try (var inputStream = getClass().getClassLoader().getResourceAsStream("hello.txt");

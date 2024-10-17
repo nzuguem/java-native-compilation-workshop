@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: 'Dashboard for Micrometer instrumented applications in Quarkus using the Prometheus registry'
+    type: file
+    options:
+      path: /otel-lgtm/quarkus/grafana-dashboard-quarkus-micrometer-prometheus.json
+      foldersFromFilesStructure: false
+  - name: 'Dashboard for Micrometer instrumented applications in Quarkus using the OTLP registry'
+    type: file
+    options:
+      path: /otel-lgtm/quarkus/grafana-dashboard-quarkus-micrometer-otlp.json
+      foldersFromFilesStructure: false
