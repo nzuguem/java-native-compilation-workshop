@@ -1,4 +1,4 @@
-package me.nzuguem.springnative;
+package me.nzuguem.springnative.controllers;
 
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.nzuguem.springnative.models.Hello;
+import me.nzuguem.springnative.services.HelloService;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +30,20 @@ public class HelloController {
     @Value("classpath:hello.txt")
     private Resource resource;
 
+    private final HelloService helloService;
+
+    HelloController(HelloService helloService) {
+        this.helloService = helloService;
+    }
+
     @GetMapping(value = "{name}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String helloFromInput(@PathVariable String name) {
         return "Hello " + name;
+    }
+
+    @GetMapping(value = "from/service", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String helloFromService() {
+        return this.helloService.hello();
     }
 
     @GetMapping(value = "from/file", produces = MediaType.TEXT_PLAIN_VALUE)

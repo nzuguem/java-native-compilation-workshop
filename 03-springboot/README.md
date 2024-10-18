@@ -11,6 +11,22 @@ During this step, we retrieve the GraalVM reachability metadata ([reachability m
 
 > All these artifacts will then be passed to the GraalVM "native-image" component.
 
+### Pitfall to avoid - **@Profile**
+
+Spring profiles are supported by native images, BUT you need to enable them at build time when AOT runs. AOT pre-processes your application and evaluates auto-configurations, ***changing the profile at runtime is therefore ignored.***
+You can use any Gradle / Maven feature to customize the `processAot` task : Define the `--spring.profiles.active` argument at this time.
+
+An alternative way of defining the profile in the Runtime is to retrieve the profile in the Runtime and choose the right class to instantiate:
+
+```java
+@Bean
+HelloService helloService(Environment environment) {
+  return Arrays.asList(environment.getActiveProfiles()).contains("prod") ? HELLO_SERVICE_PROD :  HELLO_SERVICE_DEFAULT;
+}
+```
+
+This does not apply to configuration files (`application-<profile>.<yaml | yml | properties>`), because it doesn't involve changing the beans of the application context.
+
 ## Let's see it together !
 
 1. Create Native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)

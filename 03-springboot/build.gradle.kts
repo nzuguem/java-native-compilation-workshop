@@ -1,4 +1,5 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.aot.ProcessAot
 
 fun Project.nativeExecutableLinkedMode(): String? {
 	return findProperty("nativeExecutableLinkedMode") as? String
@@ -23,6 +24,11 @@ repositories {
 }
 
 dependencies {
+	
+	implementation("io.micrometer:micrometer-tracing-bridge-otel")
+	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+	runtimeOnly("io.micrometer:micrometer-registry-otlp")
+
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
@@ -31,6 +37,10 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.withType<ProcessAot> {
+    args("--spring.profiles.active=" + (project.properties["aotProfiles"] ?: "default"))
 }
 
 tasks.getByName<BootBuildImage>("bootBuildImage") {

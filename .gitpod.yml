@@ -14,15 +14,19 @@ tasks:
       cd 03-quarkus
     init: |
       make build
-  - name: Register Docker Cloud Builder and Start Grafana - LGTM
+  - name: Register Docker Cloud Builder
     command: |
       (
         set -e
         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
         docker buildx create --driver cloud $DOCKER_USERNAME/$DOCKER_BUILDER_NAME
         echo "Use Docker cloud builder :  --builder cloud-$DOCKER_USERNAME-$DOCKER_BUILDER_NAME"
-        docker compose -f grafana/compose.lgtm.yml up -d --wait
       )
+  - name: Start Grafana - LGTM
+    before: |
+      cd grafana
+    init: |
+      docker compose -f compose.lgtm.yml up -d --wait
 
 vscode:
   extensions:
@@ -30,3 +34,6 @@ vscode:
     - VMware.vscode-spring-boot
     - redhat.vscode-quarkus
     - mhutchie.git-graph
+    - vscjava.vscode-gradle
+    - vscjava.vscode-maven
+    - ms-vscode.makefile-tools

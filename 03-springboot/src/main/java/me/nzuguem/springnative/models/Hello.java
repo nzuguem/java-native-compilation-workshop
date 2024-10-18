@@ -1,4 +1,4 @@
-package me.nzuguem.springnative;
+package me.nzuguem.springnative.models;
 
 public class Hello {
     
