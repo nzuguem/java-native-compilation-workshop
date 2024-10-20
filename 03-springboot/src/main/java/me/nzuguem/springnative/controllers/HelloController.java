@@ -68,16 +68,16 @@ public class HelloController {
 
     // We use Reflection to access the Hello class. 
     // AND without this annotation, it will not be present in the generated binary, because it cannot be accessed by static analysis
-    
+
     // It is also possible to use the RuntimeHints API to do this
     // hints.reflection().registerType(Hello.class, MemberCategory.values())
-
     @RegisterReflectionForBinding(Hello.class)
-    private String getHelloMessageFromReflection() throws Exception{
-
+    private String getHelloMessageFromReflection() throws Exception {
+        
+        // "Class.forName(String)", If the arguments to these calls can be reduced to a constant, Native Image tries to resolve target elements from the classpath
+        // For the demo, we deliberately want to break this automatism
         var className = List.<String>of("me", "nzuguem", "springnative", "Hello")
             .stream().collect(Collectors.joining("."));
-
         return (String) Class.forName(className).getDeclaredField("MESSAGE").get(String.class);
     }
 
