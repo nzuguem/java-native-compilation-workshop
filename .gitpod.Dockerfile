@@ -19,12 +19,12 @@ echo "sdkman_auto_answer=true" >> "$SDKMAN_DIR"/etc/config
 echo "sdkman_auto_env=true" >> "$SDKMAN_DIR"/etc/config
 
 ## Install JDKs
-sdk install java 23-graal
-sdk install java 23-tem
-sdk default java 23-graal
+sdk install java 24-graal
+sdk install java 24-tem
+sdk default java 24-graal
 
 ## Install Quarkus CLI
-sdk install quarkus 3.14.4
+sdk install quarkus 3.19.4
 
 EOF
 

@@ -6,3 +6,5 @@
 .quarkus
 *.sbom.json
 *.html
+x86_64*
+zlib*

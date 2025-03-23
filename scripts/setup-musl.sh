@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ZLIB_VERSION=1.2.13
+ZLIB_VERSION=1.3.1
 TOOLCHAIN_DIR=`pwd`/x86_64-linux-musl-native
 
 # Download musl
@@ -14,9 +14,9 @@ echo "zlib version=${ZLIB_VERSION}"
 wget -q https://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz
 tar -xzf zlib-${ZLIB_VERSION}.tar.gz
 rm zlib-${ZLIB_VERSION}.tar.gz
-cd zlib-${ZLIB_VERSION}
+pushd zlib-${ZLIB_VERSION}
 ./configure --prefix=${TOOLCHAIN_DIR} --static
-make
-make install
+make && make install
+popd
 
-cd ..
+echo "export PATH=$TOOLCHAIN_DIR/bin:\$PATH" >> $HOME/.bashrc

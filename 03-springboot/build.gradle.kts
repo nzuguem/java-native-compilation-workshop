@@ -7,9 +7,9 @@ fun Project.nativeExecutableLinkedMode(): String? {
 
 plugins {
 	java
-	id("org.springframework.boot") version "3.3.4"
-	id("io.spring.dependency-management") version "1.1.4"
-	id("org.graalvm.buildtools.native") version "0.10.3"
+	id("org.springframework.boot") version "3.4.4"
+	id("io.spring.dependency-management") version "1.1.7"
+	id("org.graalvm.buildtools.native") version "0.10.6"
 }
 
 group = "me.nzuguem"
@@ -17,6 +17,7 @@ version = "1.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_23
+	targetCompatibility = JavaVersion.VERSION_23
 }
 
 repositories {
@@ -36,7 +37,7 @@ dependencies {
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 tasks.withType<ProcessAot> {

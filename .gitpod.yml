@@ -27,6 +27,9 @@ tasks:
       cd grafana
     init: |
       docker compose -f compose.lgtm.yml up -d --wait
+  - name: Setup MUSL Toolchain (statically linked applications with Native Image)
+    command: |
+      bash scripts/setup-musl.sh
 
 vscode:
   extensions:
