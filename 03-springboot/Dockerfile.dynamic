@@ -4,9 +4,8 @@ RUN microdnf install findutils
 
 WORKDIR /code
 
-COPY  gradlew ./
+COPY  gradlew *.gradle.kts ./
 COPY  gradle  ./gradle
-COPY  *.gradle.kts ./
 COPY  src ./src
 
 RUN ./gradlew nativeCompile

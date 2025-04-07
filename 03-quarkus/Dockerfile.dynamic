@@ -4,9 +4,8 @@ WORKDIR /code
 
 RUN microdnf install findutils
 
-COPY  mvnw ./
 COPY  .mvn  ./.mvn
-COPY  pom.xml ./
+COPY  mvnw pom.xml ./
 COPY  src ./src
 
 RUN ./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath"

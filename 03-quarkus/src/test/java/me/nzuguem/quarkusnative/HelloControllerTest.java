@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class HelloControllerTest {
+
     @Test
     void testHelloEndpoint() {
         given()
