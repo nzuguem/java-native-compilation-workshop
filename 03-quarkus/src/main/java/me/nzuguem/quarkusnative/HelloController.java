@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import io.quarkus.logging.Log;
@@ -45,6 +46,27 @@ public class HelloController {
         
             return Response.ok(content).build();
         } catch (IOException exception) {
+
+            Log.error(exception.getMessage(), exception);
+
+            return Response.serverError().build();
+        }
+    }
+
+    @GET
+    @Path("from/reflection")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response helloFromReflection() {
+
+        try {
+            var className = List.<String>of("me", "nzuguem", "quarkusnative", "Hello")
+            .stream().collect(Collectors.joining("."));
+
+            var message = (String) Class.forName(className).getDeclaredField("MESSAGE").get(String.class);
+
+            return Response.ok(message).build();
+
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | ClassNotFoundException exception) {
 
             Log.error(exception.getMessage(), exception);
 
