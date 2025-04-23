@@ -34,10 +34,10 @@ build-native-image-with-quarkus-999-snapshot: ## Build the native image - The na
 	@$(MAKE) build-native-image MAVEN_CLI_OPTS=$(QUARKUS_999_SNAPHOT)
 
 build-native-image-static: ## Build the native image - In Static Link Mode
-	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report" $(MAVEN_CLI_OPTS)
+	@./mvnw package -Pnative -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob" $(MAVEN_CLI_OPTS)
 
 build-native-image-static-ci: ## Build the native image - In Static Link Mode
-	@./mvnw package -Pnative -Dquarkus.micrometer.otlp.enabled=false -Dquarkus.otel.enabled=false -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob" $(MAVEN_CLI_OPTS)
+	@./mvnw package -Pnative -Dquarkus.micrometer.otlp.enabled=false -Dquarkus.otel.enabled=false -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report" $(MAVEN_CLI_OPTS)
 
 build-native-image-static-with-quarkus-999-snapshot: ## Build the native image - In Static Link Mode with quarkus 999-SNAPHOT
 	@@$(MAKE) build-native-image-static MAVEN_CLI_OPTS=$(QUARKUS_999_SNAPHOT)
