@@ -55,7 +55,6 @@ graalvmNative {
 		configureEach {
 			buildArgs.add("--enable-sbom=classpath,export")
 			buildArgs.add("--emit=build-report")
-			buildArgs.add("-Ob")
 
 			when (project.nativeExecutableLinkedMode()) {
 				"mostly" -> buildArgs.add("--static-nolibc")

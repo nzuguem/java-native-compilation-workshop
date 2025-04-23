@@ -76,7 +76,7 @@ public class HelloController {
         
         // "Class.forName(String)", If the arguments to these calls can be reduced to a constant, Native Image tries to resolve target elements from the classpath
         // For the demo, we deliberately want to break this automatism
-        var className = List.<String>of("me", "nzuguem", "springnative", "Hello")
+        var className = List.<String>of("me", "nzuguem", "springnative", "models", "Hello")
             .stream().collect(Collectors.joining("."));
         return (String) Class.forName(className).getDeclaredField("MESSAGE").get(String.class);
     }

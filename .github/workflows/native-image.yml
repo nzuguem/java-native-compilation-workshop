@@ -70,7 +70,7 @@ jobs:
 
       - name: Build native Image
         run: |
-          make build-native-image-static
+          make build-native-image-static-ci
 
       - name: Upload Native Image
         uses: actions/upload-artifact@v4

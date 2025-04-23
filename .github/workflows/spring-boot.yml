@@ -46,6 +46,9 @@ jobs:
           region: europe-west9
           image: docker.io/nzuguem/spring-native:latest
           suffix: ${{ github.sha }}
+          env_vars: |-
+            MANAGEMENT_OTLP_TRACING_EXPORT_ENABLED=false
+            MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED=false
           flags: >
             --min-instances=0
             --allow-unauthenticated

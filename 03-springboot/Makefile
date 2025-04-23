@@ -21,16 +21,19 @@ run-native-for-prod: ## Launch Native Application for prod
 	@./build/native/nativeCompile/spring-native -Dspring.profiles.active=prod
 
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./gradlew nativeCompile
+	@./gradlew nativeCompile --build-args="-Ob"
 
 build-native-image-for-prod: ## Build the native image fot prod - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./gradlew nativeCompile -PaotProfiles=prod
+	@./gradlew nativeCompile --build-args="-Ob" -PaotProfiles=prod
 
 build-native-image-static: ## Build the native image - In Static Link Mode
+	@./gradlew nativeCompile --build-args="-Ob" -PnativeExecutableLinkedMode=static
+
+build-native-image-static-ci: ## Build the native image - In Static Link Mode
 	@./gradlew nativeCompile -PnativeExecutableLinkedMode=static
 
 build-native-image-static-for-prod: ## Build the native image for prod - In Static Link Mode
-	@./gradlew nativeCompile -PnativeExecutableLinkedMode=static -PaotProfiles=prod
+	@./gradlew nativeCompile --build-args="-Ob" -PnativeExecutableLinkedMode=static -PaotProfiles=prod
 
 load-jvm: ## Simulate a load of 1 million requests on the application in JVM mode
 	@../scripts/load.sh $(JVM_COMMAND)
