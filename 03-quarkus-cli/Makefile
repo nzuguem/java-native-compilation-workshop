@@ -7,14 +7,14 @@ run-native: ## Launch Native Application
 	@./build/quarkus-cli-1.0-runner
 
 build-native-image: ## Build the native image - The native image generated is highly dependent on the OS on which the command is run (GraalVM is installed on this OS)
-	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--emit=build-report","-Ob"
+	@./gradlew build -Dquarkus.native.enabled=true -Dquarkus.package.jar.enabled=false -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--emit=build-report","-Ob"
 	@cp ./build/quarkus-cli-1.0-runner hello
 
 build-native-image-static: ## Build the native image - In Static Link Mode
-	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob"
+	@./gradlew build -Dquarkus.native.enabled=true -Dquarkus.package.jar.enabled=false -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report","-Ob"
 
 build-native-image-static-ci: ## Build the native image - In Static Link Mode
-	@./gradlew build -Dquarkus.package.type=native -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report"
+	@./gradlew build -Dquarkus.native.enabled=true -Dquarkus.package.jar.enabled=false -Dquarkus.native.additional-build-args="--enable-sbom=classpath","--static","--libc=musl","-H:BuildOutputJSONFile=/tmp/native-image-build-output.json","--emit=build-report"
 
 generate-sbom-native-with-syft: ## Extraction of the SBOM embedded in the native executable, using the syft tool
 	@syft packages -o json=quarkus-cli-sbom.json build/quarkus-cli-1.0-runner

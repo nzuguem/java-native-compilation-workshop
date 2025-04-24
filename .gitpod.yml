@@ -28,7 +28,7 @@ tasks:
     init: |
       docker compose -f compose.lgtm.yml up -d --wait
   - name: Setup MUSL Toolchain (statically linked applications with Native Image)
-    command: |
+    init: |
       bash scripts/setup-musl.sh
 
 vscode:
